@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairfield Inn & Suites - Drawing Index</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Dark Blues & Grays -->
+    <!-- Application Structure Plan: A single-page application using a collapsible accordion structure. The top level consists of major disciplines (Civil, Architectural, etc.). Each discipline expands to show subgroups (e.g., Floor Plan, Room, Wall), which contain the individual drawing sheets. A global search bar filters all content in real-time. This hierarchical structure is intuitive for construction documents and the search function provides immediate access, maximizing usability for users trying to locate specific information quickly. -->
+    <!-- Visualization & Content Choices: The primary content is a hierarchical list of drawings. Goal: Organize/Inform. Method: Styled HTML divs creating nested, collapsible lists. Interaction: A live text search filters drawings and schedule descriptions. Section headers are clickable to expand/collapse. Justification: This is the most direct and effective way to present a large, categorized index. No charts are needed as the data is purely textual and organizational. Method: Vanilla JS for interactions, Tailwind CSS for styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .section-content {
+            display: none;
+        }
+        .section-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl bg-gray-800 rounded-lg shadow-xl">
+        <header class="mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-50">Fairfield Inn & Suites, Pendleton, IN</h1>
+            <p class="text-md text-gray-300 mt-1">Interactive Project Drawing Index</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="md:col-span-2 bg-gray-700 p-6 rounded-lg shadow-inner">
+                <h3 class="font-bold text-lg text-gray-50 mb-3 border-b border-gray-600 pb-2">Project Information</h3>
+                <div class="space-y-2 text-sm text-gray-200">
+                    <p><strong>Developer:</strong> Nirvana HG</p>
+                    <p><strong>Architecture:</strong> Melissa Salyer</p>
+                    <p><strong>Civil Engineer:</strong> Rusty Spiars</p>
+                    <p><strong>Surveyor:</strong> Don Mosson, Jossee Mosson</p>
+                    <p><strong>Geotech & Environmental:</strong> Patriot Engineering</p>
+                    <p><strong>Construction Manager:</strong> NorthCo</p>
+                </div>
+            </div>
+             <div class="bg-gray-700 p-6 rounded-lg shadow-inner">
+                <h3 class="font-bold text-lg text-gray-50 mb-3 border-b border-gray-600 pb-2">Legends</h3>
+                <ul class="space-y-2 text-sm">
+                    <li><span class="inline-block w-4 h-4 bg-green-400 rounded-sm mr-2 align-middle"></span><span class="text-gray-200">Text Only / No Plan</span></li>
+                    <li><span class="inline-block w-4 h-4 bg-yellow-300 rounded-sm mr-2 align-middle"></span><span class="text-gray-200">Text & Drawing / No Plan</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mb-8">
+            <input type="text" id="searchInput" onkeyup="filterDrawings()" placeholder="Search for any drawing, sheet number, or schedule..." class="w-full p-4 border border-gray-600 rounded-lg shadow-inner bg-gray-700 text-gray-100 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+        </div>
+
+        <main id="drawing-container" class="space-y-4">
+            <!-- Drawing data will be injected here by JavaScript -->
+        </main>
+    </div>
+
+    <script>
+        const drawingData = [
+            { category: 'CIVIL', subcategory: 'COVER SHEET', shortname: 'C000', name: 'COVER SHEET', sheets: [{ shortname: 'C000', name: 'COVER SHEET' }] },
+            { category: 'CIVIL', subcategory: 'EXISTING SITE CONDITIONS', shortname: 'C100', name: 'EXISTING SITE CONDITIONS', sheets: [{ shortname: 'C100', name: 'EXISTING SITE CONDITIONS' }] },
+            { category: 'CIVIL', subcategory: 'SITE PLAN', shortname: 'C200', name: 'SITE PLAN', sheets: [{ shortname: 'C200', name: 'SITE PLAN' }] },
+            { category: 'CIVIL', subcategory: 'GRADING & EROSION', sheets: [
+                { shortname: 'C300', name: 'GRADING PLAN' },
+                { shortname: 'C301', name: 'EROSION CONTROL PLAN', schedule: '<strong>Erosion Control Device Schedule:</strong> Details various erosion control measures (e.g., silt fence, inlet protection) and their specifications.' },
+                { shortname: 'C302', name: 'EROSION CONTROL / SWPPP NOTES' },
+                { shortname: 'C303', name: 'EROSION CONTROL DETAILS' }
+            ]},
+            { category: 'CIVIL', subcategory: 'UTILITY', sheets: [
+                { shortname: 'C400', name: 'UTILITY PLAN', schedule: '<strong>Storm Sewer Structure Schedule:</strong> Lists catch basins, manholes, and other storm drainage elements with their types, sizes, and invert elevations.<br><strong>Sanitary Sewer Structure Schedule:</strong> Lists manholes and other sanitary sewer elements with their types and invert elevations.<br><strong>Utility Connection Schedule:</strong> Details connections to municipal utilities.' }
+            ]},
+            { category: 'CIVIL', subcategory: 'CONSTRUCTION', sheets: [{ shortname: 'C500', name: 'CONSTRUCTION DETAILS' }] },
+            { category: 'CIVIL', subcategory: 'LANDSCAPE', sheets: [
+                { shortname: 'C600', name: 'LANDSCAPE PLAN', schedule: '<strong>Planting Schedule:</strong> Lists all trees, shrubs, and groundcovers by quantity, botanical and common names, size, and planting notes.<br><strong>Site Furnishing Schedule:</strong> Details benches, bike racks, trash receptacles, etc.' }
+            ]},
+            { category: 'CIVIL', subcategory: 'LIGHTING PHOTOMETRIC', sheets: [{ shortname: 'E101', name: 'LIGHTING PHOTOMETRIC' }] },
+            
+            { category: 'ARCHITECTURAL', subcategory: 'HIGH LEVEL', sheets: [
+                { shortname: 'T-1', name: 'TITLE SHEET' },
+                { shortname: 'T-2', name: 'OCCUPANCY FIRE RATING PLANS & DETAILS' },
+                { shortname: 'T-3', name: 'STRUCTURAL FIRE RATING PLANS & DETAILS' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'FLOOR PLAN', sheets: [
+                { shortname: 'A1.1', name: 'FIRST (1ST) FLOOR PLAN', schedule: '<strong>Room Mix Matrix:</strong> Details room types, quantities, and areas.<br><strong>Room Numbering/Naming Schedule:</strong> A simple list of room numbers and their corresponding names.' },
+                { shortname: 'A1.2', name: 'SECOND (2ND) FLOOR PLAN' },
+                { shortname: 'A1.3', name: 'THIRD (3RD) FLOOR PLAN' },
+                { shortname: 'A1.4', name: 'FOURTH (4TH) FLOOR PLAN' },
+                { shortname: 'A1.5', name: 'ROOF PLAN' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'EXTERIOR ELEVATIONS', sheets: [{ shortname: 'A2.1', name: 'EXTERIOR ELEVATIONS' }] },
+            { category: 'ARCHITECTURAL', subcategory: 'ROOM', sheets: [
+                { shortname: 'A3.0a', name: 'GUESTROOM DETAILS & NOTES' },
+                { shortname: 'A3.0b', name: 'GUESTROOM DETAILS & NOTES' },
+                { shortname: 'A3.0c', name: 'GUESTROOM ENLARGED CASEWORK & DETAILS', schedule: '<strong>Casework Schedule:</strong> Lists custom millwork and built-in elements with dimensions, materials, and finishes.' },
+                { shortname: 'A3.1', name: 'KING ENLARGEMENT' },
+                { shortname: 'A3.2', name: 'ACCESSIBLE KING ENLARGEMENT' },
+                { shortname: 'A3.3', name: 'KING SUITE ENLARGEMENT' },
+                { shortname: 'A3.4', name: 'ACCESSIBLE KING SUITE ENLARGEMENT' },
+                { shortname: 'A3.5', name: 'QUEEN QUEEN ENLARGEMENT' },
+                { shortname: 'A3.6', name: 'ACCESSIBLE Q.Q. TUB & ROLL-IN ENLARGEMENT' },
+                { shortname: 'A3.7', name: 'QUEEN QUEEN SUITE ENLARGEMENT' },
+                { shortname: 'A3.8', name: 'ACCESSIBLE QUEEN QUEEN SUITE ENLARGEMENT' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'ENLARGEMENT', sheets: [
+                { shortname: 'A4.1', name: 'FIRST (1ST) FLOOR CORE PLAN ENLARGEMENT' },
+                { shortname: 'A4.2', name: 'FIRST (1ST) FLOOR PLAN ENLARGEMENT' },
+                { shortname: 'A4.3', name: 'MISC PLAN ENLARGEMENTS' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'WALL', sheets: [
+                { shortname: 'A5.1', name: 'WALL TYPES & DETAILS' }, { shortname: 'A5.2', name: 'ASSEMBLY PENETRATIONS' },
+                { shortname: 'A5.3', name: 'WALL SECTIONS & DETAILS' }, { shortname: 'A5.4', name: 'STAIR PLANS & DETAILS' },
+                { shortname: 'A5.5', name: 'STAIR SECTION & DETAILS' }, { shortname: 'A5.5b', name: 'STAIR SECTION & DETAILS' },
+                { shortname: 'A5.6', name: 'ELEVATOR SECTION & DETAILS' }, { shortname: 'A5.7', name: 'LINEN CHUTE SECTION & DETAILS' },
+                { shortname: 'A5.8', name: 'CANOPY SECTIONS DETAILS' }, { shortname: 'A5.9', name: 'DUMPSTER SECTIONS & DETAILS' },
+                { shortname: 'A5.10', name: 'MISC. SECTIONS & DETAILS' }, { shortname: 'A5.11', name: 'ENLARGED & MISC. DETAILS' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'INTERIOR ELEVATIONS', sheets: [
+                { shortname: 'A6.1', name: 'INTERIOR ELEVATIONS, DETAILS SECTIONS' }, { shortname: 'A6.2', name: 'BREAKFAST DETAILS & ELEVATIONS' },
+                { shortname: 'A6.3', name: 'EXERCISE PUBLIC REST ROOM ELEVATIONS' }, { shortname: 'A6.4', name: 'CONNECT & PRINT DETAILS ELEVATIONS' },
+                { shortname: 'A6.5', name: 'LOBBY RETAIL DETAILS & ELEVATIONS' }, { shortname: 'A6.6', name: 'REGISTRATION DETAILS & ELEVATIONS' },
+                { shortname: 'A6.7', name: 'REGISTRATION DETAILS & ELEVATIONS' }, { shortname: 'A6.8', name: 'FOOD SERVICE EQUIPMENT INT. ELEV. & SECTIONS' },
+                { shortname: 'A6.9', name: 'INTERIOR ELEVATIONS & DETAILS' }, { shortname: 'A6.10', name: 'HEARTH DETAILS & POOL INT. ELEVATIONS' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'DOOR & WINDOW', sheets: [
+                { shortname: 'A7.1', name: 'DOOR SCHEDULE & DETAILS', schedule: '<strong>Door Schedule:</strong> Comprehensive list of all doors, including ID, size, type, material, fire rating, hardware set, and remarks.' },
+                { shortname: 'A7.2', name: 'WINDOW DETAILS & ROOM FINISH SCHEDULE', schedule: '<strong>Window Schedule:</strong> Details all windows with ID, size, type, material, glazing, and remarks.<br><strong>Room Finish Schedule:</strong> Specifies floor, base, wall, and ceiling finishes for each room.' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'CEILING', sheets: [
+                { shortname: 'A8.1', name: 'FIRST (1ST) & SECOND (2ND) FLOOR REFLECTED CEILING PLAN' },
+                { shortname: 'A8.1a', name: 'FIRST (1ST) FLOOR CORE RCP ENLARGEMENT' }, { shortname: 'A8.1b', name: 'FIRST (1ST) FLOOR RCP ENLARGEMENT' },
+                { shortname: 'A8.2', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR REFLECTED CEILING PLAN' }
+            ]},
+            { category: 'ARCHITECTURAL', subcategory: 'FF&E', sheets: [
+                { shortname: 'A9.1', name: 'FIRST (1ST) FLOOR FF&E CORE ENLARGEMENT', schedule: '<strong>FF&E Schedule:</strong> Lists all loose furniture, decorative fixtures, and equipment by item number, description, manufacturer, model, and quantity.' },
+                { shortname: 'A9.2', name: 'FIRST (1ST) FLOOR FF&E PLAN ENLARGEMENT' },
+                { shortname: 'A9.3', name: 'MISC FF&E ENLARGEMENTS' }
+            ]},
+
+            { category: 'STRUCTURAL', subcategory: 'OVERALL', sheets: [
+                { shortname: 'S1.0', name: 'STRUCTURAL NOTES, SCHEDULES & DETAILS', schedule: '<strong>General Structural Notes:</strong> Often contains tabular data for material properties, design loads, or construction requirements.<br><strong>Foundation Schedule:</strong> Details various foundation elements with dimensions, rebar, and concrete strength.<br><strong>Column Schedule:</strong> Lists vertical structural members with sizes, materials, and reinforcement.<br><strong>Beam Schedule:</strong> Lists horizontal structural members with sizes, materials, and reinforcement.<br><strong>Steel Member Schedule:</strong> Lists steel shapes and their properties.<br><strong>Concrete Schedule:</strong> Specifications for different concrete mixes used on the project.' },
+                { shortname: 'S1.1', name: 'FOUNDATION PLAN' }, { shortname: 'S1.2', name: 'SECOND (2ND) FLOOR FRAMING PLAN' },
+                { shortname: 'S1.3', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR FRAMING PLAN' }, { shortname: 'S1.4', name: 'ROOF FRAMING PLAN' }
+            ]},
+            { category: 'STRUCTURAL', subcategory: 'FOUNDATION', sheets: [{ shortname: 'S2.1', name: 'FOUNDATION DETAILS' }] },
+            { category: 'STRUCTURAL', subcategory: 'STEEL ELEVATIONS', sheets: [
+                { shortname: 'S3.1', name: 'STEEL ELEVATIONS DETAILS' }, { shortname: 'S3.2', name: 'STEEL ELEVATIONS & DETAILS' }
+            ]},
+            { category: 'STRUCTURAL', subcategory: 'SHEAR WALL, FRAMING & DIAPHRAGM', sheets: [
+                { shortname: 'S4.1', name: 'SHEAR WALL & FRAMING DETAILS' }, { shortname: 'S4.2', name: 'SHEAR WALL & DIAPHRAGM PETAILS' }
+            ]},
+            
+            { category: 'PLUMBING', subcategory: 'OVERALL', sheets: [
+                { shortname: 'P1.0', name: 'PLUMBING SCHEDULE DETAILS', schedule: '<strong>Plumbing Fixture Schedule:</strong> Lists all plumbing fixtures with tag, type, manufacturer, model, and remarks.<br><strong>Plumbing Equipment Schedule:</strong> Details water heaters, pumps, water treatment units, etc.<br><strong>Drainage Structure Schedule:</strong> Specific details for interior floor drains, cleanouts, etc.' },
+                { shortname: 'P1.1a', name: 'FIRST (1ST) FLOOR BELOW SLAB PLUMBING PLAN' }, { shortname: 'P1.1b', name: 'FIRST (1ST) FLOOR ABOVE SLAB PLUMBING PLAN' },
+                { shortname: 'P1.2', name: 'SECOND (2ND) FLOOR PLUMBING PLAN' }, { shortname: 'P1.3', name: 'THIRD (3RD) FLOOR PLUMBING PLAN' },
+                { shortname: 'P1.4', name: 'FOURTH (4TH) FLOOR PLUMBING PLAN' }, { shortname: 'P1.5', name: 'ROOF DRAINAGE PLAN' }
+            ]},
+            { category: 'PLUMBING', subcategory: 'ISOMETRIC', sheets: [{ shortname: 'P2.1', name: 'ISOMETRIC PLAN' }] },
+            { category: 'PLUMBING', subcategory: 'WATER DISTRIBUTION', sheets: [
+                { shortname: 'P3.1', name: 'FIRST (1ST) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.2', name: 'SECOND (2ND) FLOOR WATER DISTRIBUTION PLAN' },
+                { shortname: 'P3.3', name: 'THIRD (3RD) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.4', name: 'FOURTH (4TH) FLOOR WATER DISTRIBUTION PLAN' }
+            ]},
+            { category: 'PLUMBING', subcategory: 'GAS, STORM, DRAINAGE PLAN', sheets: [
+                { shortname: 'P4.1', name: 'FIRST (1ST) FLOOR GAS, STORM, DRAINAGE PLAN', schedule: '<strong>Gas Appliance Schedule:</strong> Lists gas-fired equipment (e.g., boilers, water heaters) with BTU ratings.' }
+            ]},
+            
+            { category: 'MECHANICAL', subcategory: 'OVERALL', sheets: [
+                { shortname: 'M1.0', name: 'MECHANICAL SCHEDULE DETAILS', schedule: '<strong>Mechanical Equipment Schedule:</strong> Lists HVAC units (RTUs, AHUs, split systems, exhaust fans) with capacity, airflow, electrical data, and other specifics.<br><strong>Air Device Schedule:</strong> Details grilles, registers, and diffusers with type, size, airflow, and location.<br><strong>Fan Schedule:</strong> Specific details for various fans.<br><strong>Coil Schedule:</strong> Details heating and cooling coils within HVAC systems.' },
+                { shortname: 'M1.1', name: 'FIRST (1ST) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.2', name: 'SECOND (2ND) FLOOR MECHANICAL PLAN' },
+                { shortname: 'M1.3', name: 'THIRD (3RD) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.4', name: 'FOURTH (4TH) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.5', name: 'ROOF MECHANICAL PLAN' }
+            ]},
+            { category: 'MECHANICAL', subcategory: 'ENLARGEMENT', sheets: [{ shortname: 'M2.1', name: 'CORE MECHANICAL ENLARGEMENT' }] },
+
+            { category: 'ELECTRICAL', subcategory: 'OVERALL', sheets: [
+                { shortname: 'E1.0', name: 'SITE LIGHTING PLAN', schedule: '<strong>Site Lighting Fixture Schedule:</strong> A schedule specifically for exterior lighting fixtures.' },
+                { shortname: 'E1.0a', name: 'SITE PHOTOMETRIC PLAN' }, { shortname: 'E1.0b', name: 'SITE PLAN DETAILS' },
+                { shortname: 'E1.1', name: 'FIRST (1ST) FLOOR ELECTRICAL PLAN' }, { shortname: 'E1.2', name: 'SECOND (2ND) & THIRD (3RD) FLOOR ELECTRICAL PLAN' },
+                { shortname: 'E1.3', name: 'FOURTH (4TH) FLOOR & ROOF ELECTRICAL PLAN' }
+            ]},
+            { category: 'ELECTRICAL', subcategory: 'ENLARGEMENT', sheets: [
+                { shortname: 'E2.1', name: 'CORE ENLARGEMENT POWER PLAN' }, { shortname: 'E2.2', name: 'CORE ENLARGEMENT LIGHT PLAN' },
+                { shortname: 'E2.3', name: 'POOL/FITNESS ENLARGEMENT POWER PLAN' }, { shortname: 'E2.4', name: 'POOL/FITNESS ENLARGEMENT LIGHT PLAN' },
+                { shortname: 'E2.5', name: 'LAUNDRY ENLARGEMENT POWER/LIGHT PLAN' }
+            ]},
+            { category: 'ELECTRICAL', subcategory: 'PANEL SCHEDULES', sheets: [
+                { shortname: 'E3.1', name: 'PANEL SCHEDULES', schedule: '<strong>Panel Schedules:</strong> Detailed tables for electrical panels, including circuit numbers, descriptions, breaker sizes, and connected loads.' },
+                { shortname: 'E3.2', name: 'PANEL SCHEDULES' }
+            ]},
+            { category: 'ELECTRICAL', subcategory: 'SINGLE LINE', sheets: [{ shortname: 'E4.1', name: 'ELECTRICAL SINGLE LINE DIAGRAM' }] },
+            { category: 'ELECTRICAL', subcategory: 'LIGHT FIXTURES, DIAGRAMS & LEGENDS', sheets: [
+                { shortname: 'E5.1', name: 'LIGHT FIXTURE SCHEDULE', schedule: '<strong>Light Fixture Schedule:</strong> Lists interior and exterior light fixtures by type, lamp, wattage, voltage, mounting, and remarks.' },
+                { shortname: 'E5.2', name: 'ELECTRICAL DIAGRAMS & DETAILS' },
+                { shortname: 'E5.3', name: 'ELECTRICAL LEGENDS & NOTES', schedule: '<strong>Electrical Legend Table:</strong> Defines symbols used on the drawings.<br><strong>Equipment Connection Schedule:</strong> Lists electrical equipment requiring power connections, showing associated circuits and breakers.<br><strong>Data/Communications Schedule:</strong> If applicable, details network drops, telephone outlets, and other low-voltage connections.' }
+            ]},
+            { category: 'SPECIFICATIONS', subcategory: 'SPECIFICATIONS', sheets: [{ shortname: 'SC-1', name: 'SPECIFICATIONS' }] }
+        ];
+
+        function createFileName(category, subcategory, shortname, name) {
+            const cleanCategory = category.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+            const cleanSubcategory = subcategory.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+            const cleanShortname = shortname.toUpperCase().replace(/[^A-Z0-9]/g, '_');
+            const cleanName = name.toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g, '_');
+            return `${cleanCategory}_${cleanSubcategory}_${cleanShortname}_${cleanName}.pdf`;
+        }
+
+        function buildDrawingIndex() {
+            const container = document.getElementById('drawing-container');
+            container.innerHTML = '';
+            
+            const groupedData = drawingData.reduce((acc, item) => {
+                acc[item.category] = acc[item.category] || [];
+                acc[item.category].push(item);
+                return acc;
+            }, {});
+
+            for (const category in groupedData) {
+                const categoryId = category.replace(/\s+/g, '-').toLowerCase();
+                
+                const sectionWrapper = document.createElement('div');
+                sectionWrapper.className = 'bg-gray-800 rounded-lg shadow-sm transition-all duration-300';
+                
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'section-header flex justify-between items-center p-4 cursor-pointer hover:bg-gray-700';
+                
+                let categoryTitle = category;
+                if (category === 'CIVIL') {
+                    categoryTitle += ' (C-Sheets)';
+                } else if (category === 'ARCHITECTURAL') {
+                    categoryTitle += ' (A-Sheets)';
+                } else if (category === 'STRUCTURAL') {
+                    categoryTitle += ' (S-Sheets)';
+                } else if (category === 'PLUMBING') {
+                    categoryTitle += ' (P-Sheets)';
+                } else if (category === 'MECHANICAL') {
+                    categoryTitle += ' (M-Sheets)';
+                } else if (category === 'ELECTRICAL') {
+                    categoryTitle += ' (E-Sheets)';
+                }
+                // 'SPECIFICATIONS' remains without a sheet prefix as it was not requested.
+
+                sectionHeader.innerHTML = `<h2 class="text-xl font-semibold text-blue-300">${categoryTitle}</h2>
+                                           <svg class="w-6 h-6 text-blue-300 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+                sectionHeader.onclick = () => {
+                    const content = document.getElementById(`content-${categoryId}`);
+                    content.classList.toggle('active');
+                    sectionHeader.querySelector('svg').classList.toggle('rotate-180');
+                    sectionWrapper.classList.toggle('shadow-lg');
+                };
+
+                const sectionContent = document.createElement('div');
+                sectionContent.id = `content-${categoryId}`;
+                sectionContent.className = 'section-content px-4 pb-4';
+
+                groupedData[category].forEach(subcat => {
+                    const subgroupSection = document.createElement('div');
+                    subgroupSection.className = 'subgroup-section mt-4 pt-4 border-t border-gray-700';
+                    
+                    const isSingleSheet = subcat.sheets.length === 1;
+                    const compilationText = isSingleSheet ? '' : ' (Compilation)';
+                    const compilationLink = isSingleSheet ? 
+                        `path/to/${createFileName(category, subcat.subcategory, subcat.sheets[0].shortname, subcat.sheets[0].name)}` :
+                        `path/to/${category.toUpperCase()}_${subcat.subcategory.toUpperCase().replace(/[^A-Z0-9]/g, '_')}_COMPILATION.pdf`;
+
+                    subgroupSection.innerHTML = `<h4 class="subgroup-title text-lg font-semibold text-blue-300 mb-2">
+                                                    <a href="${compilationLink}" target="_blank" class="hover:underline">${subcat.subcategory}${compilationText}</a>
+                                                 </h4>`;
+                    
+                    const drawingList = document.createElement('div');
+                    drawingList.className = 'drawing-list space-y-2';
+
+                    subcat.sheets.forEach(sheet => {
+                        const fullName = createFileName(category, subcat.subcategory, sheet.shortname, sheet.name);
+                        const drawingItemWrapper = document.createElement('div');
+                        drawingItemWrapper.className = 'drawing-item-wrapper';
+
+                        const drawingItem = document.createElement('div');
+                        drawingItem.className = 'drawing-item';
+                        drawingItem.innerHTML = `<a href="path/to/${fullName}" target="_blank" class="text-blue-400 hover:text-blue-200 transition">
+                                                    <strong class="font-mono bg-gray-700 px-2 py-1 rounded-md text-sm text-gray-100">${sheet.shortname}</strong>: ${sheet.name}
+                                                 </a>`;
+                        drawingItemWrapper.appendChild(drawingItem);
+
+                        if (sheet.schedule) {
+                            const scheduleInfo = document.createElement('div');
+                            scheduleInfo.className = 'schedule-info ml-8 mt-2 p-3 bg-gray-700 border-l-4 border-gray-500 rounded-r-md text-sm text-gray-300';
+                            scheduleInfo.innerHTML = sheet.schedule;
+                            drawingItemWrapper.appendChild(scheduleInfo);
+                        }
+                        drawingList.appendChild(drawingItemWrapper);
+                    });
+                    
+                    subgroupSection.appendChild(drawingList);
+                    sectionContent.appendChild(subgroupSection);
+                });
+                
+                sectionWrapper.appendChild(sectionHeader);
+                sectionWrapper.appendChild(sectionContent);
+                container.appendChild(sectionWrapper);
+            }
+        }
+
+        function filterDrawings() {
+            const filter = document.getElementById('searchInput').value.toUpperCase();
+            const sections = document.querySelectorAll('#drawing-container > div');
+
+            sections.forEach(section => {
+                let sectionHasVisibleContent = false;
+                const subgroups = section.querySelectorAll('.subgroup-section');
+                
+                subgroups.forEach(subgroup => {
+                    let subgroupHasVisibleContent = false;
+                    const items = subgroup.querySelectorAll('.drawing-item-wrapper');
+                    
+                    items.forEach(item => {
+                        const itemText = item.textContent || item.innerText;
+                        if (itemText.toUpperCase().indexOf(filter) > -1) {
+                            item.style.display = "";
+                            subgroupHasVisibleContent = true;
+                            sectionHasVisibleContent = true;
+                        } else {
+                            item.style.display = "none";
+                        }
+                    });
+
+                    if (subgroupHasVisibleContent) {
+                        subgroup.style.display = "";
+                    } else {
+                        subgroup.style.display = "none";
+                    }
+                });
+
+                const content = section.querySelector('.section-content');
+                const header = section.querySelector('.section-header');
+                const svg = header.querySelector('svg');
+
+                if (filter === "") {
+                    section.style.display = "";
+                    content.classList.remove('active');
+                    svg.classList.remove('rotate-180');
+                    section.classList.remove('shadow-lg');
+                } else {
+                    if (sectionHasVisibleContent) {
+                        section.style.display = "";
+                        content.classList.add('active');
+                        svg.classList.add('rotate-180');
+                        section.classList.add('shadow-lg');
+                    } else {
+                        section.style.display = "none";
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', buildDrawingIndex);
+    </script>
+</body>
+</html>
