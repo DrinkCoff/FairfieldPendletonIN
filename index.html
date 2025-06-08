@@ -61,157 +61,154 @@
 
     <script>
         const drawingData = [
-            { category: 'CIVIL', subcategory: 'COVER SHEET', sheets: [{ shortname: 'C000', name: 'COVER SHEET', page: 1 }] },
-            { category: 'CIVIL', subcategory: 'EXISTING SITE CONDITIONS', sheets: [{ shortname: 'C100', name: 'EXISTING SITE CONDITIONS', page: 2 }] },
-            { category: 'CIVIL', subcategory: 'SITE PLAN', sheets: [{ shortname: 'C200', name: 'SITE PLAN', page: 3 }] },
+            { category: 'CIVIL', subcategory: 'COVER SHEET', sheets: [{ shortname: 'C000', name: 'COVER SHEET' }] },
+            { category: 'CIVIL', subcategory: 'EXISTING SITE CONDITIONS', sheets: [{ shortname: 'C100', name: 'EXISTING SITE CONDITIONS' }] },
+            { category: 'CIVIL', subcategory: 'SITE PLAN', sheets: [{ shortname: 'C200', name: 'SITE PLAN' }] },
             { category: 'CIVIL', subcategory: 'GRADING & EROSION', sheets: [
-                { shortname: 'C300', name: 'GRADING PLAN', page: 3 },
-                { shortname: 'C301', name: 'EROSION CONTROL PLAN', schedule: '<strong>Erosion Control Device Schedule:</strong> Details various erosion control measures (e.g., silt fence, inlet protection) and their specifications.', page: 4 },
-                { shortname: 'C302', name: 'EROSION CONTROL / SWPPP NOTES', page: 5 },
-                { shortname: 'C303', name: 'EROSION CONTROL DETAILS', page: 6 }
+                { shortname: 'C300', name: 'GRADING PLAN', schedule: '<strong>Erosion Control Device Schedule:</strong> Details various erosion control measures (e.g., silt fence, inlet protection) and their specifications.' },
+                { shortname: 'C301', name: 'EROSION CONTROL PLAN' },
+                { shortname: 'C302', name: 'EROSION CONTROL / SWPPP NOTES' },
+                { shortname: 'C303', name: 'EROSION CONTROL DETAILS' }
             ]},
             { category: 'CIVIL', subcategory: 'UTILITY', sheets: [
-                { shortname: 'C400', name: 'UTILITY PLAN', schedule: '<strong>Storm Sewer Structure Schedule:</strong> Lists catch basins, manholes, and other storm drainage elements with their types, sizes, and invert elevations.<br><strong>Sanitary Sewer Structure Schedule:</strong> Lists manholes and other sanitary sewer elements with their types and invert elevations.<br><strong>Utility Connection Schedule:</strong> Details connections to municipal utilities.', page: 7 }
+                { shortname: 'C400', name: 'UTILITY PLAN', schedule: '<strong>Storm Sewer Structure Schedule:</strong> Lists catch basins, manholes, and other storm drainage elements with their types, sizes, and invert elevations.<br><strong>Sanitary Sewer Structure Schedule:</strong> Lists manholes and other sanitary sewer elements with their types and invert elevations.<br><strong>Utility Connection Schedule:</strong> Details connections to municipal utilities.' }
             ]},
-            { category: 'CIVIL', subcategory: 'CONSTRUCTION', sheets: [{ shortname: 'C500', name: 'CONSTRUCTION DETAILS', page: 8 }] },
+            { category: 'CIVIL', subcategory: 'CONSTRUCTION', sheets: [{ shortname: 'C500', name: 'CONSTRUCTION DETAILS' }] },
             { category: 'CIVIL', subcategory: 'LANDSCAPE', sheets: [
-                { shortname: 'C600', name: 'LANDSCAPE PLAN', schedule: '<strong>Planting Schedule:</strong> Lists all trees, shrubs, and groundcovers by quantity, botanical and common names, size, and planting notes.<br><strong>Site Furnishing Schedule:</strong> Details benches, bike racks, trash receptacles, etc.', page: 9 }
+                { shortname: 'C600', name: 'LANDSCAPE PLAN', schedule: '<strong>Planting Schedule:</strong> Lists all trees, shrubs, and groundcovers by quantity, botanical and common names, size, and planting notes.<br><strong>Site Furnishing Schedule:</strong> Details benches, bike racks, trash receptacles, etc.' }
             ]},
-            { category: 'CIVIL', subcategory: 'LIGHTING PHOTOMETRIC', sheets: [{ shortname: 'E101', name: 'LIGHTING PHOTOMETRIC', page: 10 }] },
+            { category: 'CIVIL', subcategory: 'LIGHTING PHOTOMETRIC', sheets: [{ shortname: 'E101', name: 'LIGHTING PHOTOMETRIC' }] },
             
             { category: 'ARCHITECTURAL', subcategory: 'HIGH LEVEL', sheets: [
-                { shortname: 'T-1', name: 'TITLE SHEET', page: 11 },
-                { shortname: 'T-2', name: 'OCCUPANCY FIRE RATING PLANS & DETAILS', page: 12 },
-                { shortname: 'T-3', name: 'STRUCTURAL FIRE RATING PLANS & DETAILS', page: 13 }
+                { shortname: 'T-1', name: 'TITLE SHEET' },
+                { shortname: 'T-2', name: 'OCCUPANCY FIRE RATING PLANS & DETAILS' },
+                { shortname: 'T-3', name: 'STRUCTURAL FIRE RATING PLANS & DETAILS' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'FLOOR PLAN', sheets: [
-                { shortname: 'A1.1', name: 'FIRST (1ST) FLOOR PLAN', schedule: '<strong>Room Mix Matrix:</strong> Details room types, quantities, and areas.<br><strong>Room Numbering/Naming Schedule:</strong> A simple list of room numbers and their corresponding names.', page: 14 },
-                { shortname: 'A1.2', name: 'SECOND (2ND) FLOOR PLAN', page: 15 },
-                { shortname: 'A1.3', name: 'THIRD (3RD) FLOOR PLAN', page: 16 },
-                { shortname: 'A1.4', name: 'FOURTH (4TH) FLOOR PLAN', page: 17 },
-                { shortname: 'A1.5', name: 'ROOF PLAN', page: 18 }
+                { shortname: 'A1.1', name: 'FIRST (1ST) FLOOR PLAN', schedule: '<strong>Room Mix Matrix:</strong> Details room types, quantities, and areas.<br><strong>Room Numbering/Naming Schedule:</strong> A simple list of room numbers and their corresponding names.' },
+                { shortname: 'A1.2', name: 'SECOND (2ND) FLOOR PLAN' },
+                { shortname: 'A1.3', name: 'THIRD (3RD) FLOOR PLAN' },
+                { shortname: 'A1.4', name: 'FOURTH (4TH) FLOOR PLAN' },
+                { shortname: 'A1.5', name: 'ROOF PLAN' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'EXTERIOR ELEVATIONS', sheets: [{ shortname: 'A2.1', name: 'EXTERIOR ELEVATIONS', page: 19 }] },
+            { category: 'ARCHITECTURAL', subcategory: 'EXTERIOR ELEVATIONS', sheets: [{ shortname: 'A2.1', name: 'EXTERIOR ELEVATIONS' }] },
             { category: 'ARCHITECTURAL', subcategory: 'ROOM', sheets: [
-                { shortname: 'A3.0a', name: 'GUESTROOM DETAILS & NOTES', page: 20 },
-                { shortname: 'A3.0b', name: 'GUESTROOM DETAILS & NOTES', page: 21 },
-                { shortname: 'A3.0c', name: 'GUESTROOM ENLARGED CASEWORK & DETAILS', schedule: '<strong>Casework Schedule:</strong> Lists custom millwork and built-in elements with dimensions, materials, and finishes.', page: 22 },
-                { shortname: 'A3.1', name: 'KING ENLARGEMENT', page: 23 },
-                { shortname: 'A3.2', name: 'ACCESSIBLE KING ENLARGEMENT', page: 24 },
-                { shortname: 'A3.3', name: 'KING SUITE ENLARGEMENT', page: 25 },
-                { shortname: 'A3.4', name: 'ACCESSIBLE KING SUITE ENLARGEMENT', page: 26 },
-                { shortname: 'A3.5', name: 'QUEEN QUEEN ENLARGEMENT', page: 27 },
-                { shortname: 'A3.6', name: 'ACCESSIBLE Q.Q. TUB & ROLL-IN ENLARGEMENT', page: 28 },
-                { shortname: 'A3.7', name: 'QUEEN QUEEN SUITE ENLARGEMENT', page: 29 },
-                { shortname: 'A3.8', name: 'ACCESSIBLE QUEEN QUEEN SUITE ENLARGEMENT', page: 30 }
+                { shortname: 'A3.0a', name: 'GUESTROOM DETAILS & NOTES' },
+                { shortname: 'A3.0b', name: 'GUESTROOM DETAILS & NOTES' },
+                { shortname: 'A3.0c', name: 'GUESTROOM ENLARGED CASEWORK & DETAILS', schedule: '<strong>Casework Schedule:</strong> Lists custom millwork and built-in elements with dimensions, materials, and finishes.' },
+                { shortname: 'A3.1', name: 'KING ENLARGEMENT' },
+                { shortname: 'A3.2', name: 'ACCESSIBLE KING ENLARGEMENT' },
+                { shortname: 'A3.3', name: 'KING SUITE ENLARGEMENT' },
+                { shortname: 'A3.4', name: 'ACCESSIBLE KING SUITE ENLARGEMENT' },
+                { shortname: 'A3.5', name: 'QUEEN QUEEN ENLARGEMENT' },
+                { shortname: 'A3.6', name: 'ACCESSIBLE Q.Q. TUB & ROLL-IN ENLARGEMENT' },
+                { shortname: 'A3.7', name: 'QUEEN QUEEN SUITE ENLARGEMENT' },
+                { shortname: 'A3.8', name: 'ACCESSIBLE QUEEN QUEEN SUITE ENLARGEMENT' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'ENLARGEMENT', sheets: [
-                { shortname: 'A4.1', name: 'FIRST (1ST) FLOOR CORE PLAN ENLARGEMENT', page: 31 },
-                { shortname: 'A4.2', name: 'FIRST (1ST) FLOOR PLAN ENLARGEMENT', page: 32 },
-                { shortname: 'A4.3', name: 'MISC PLAN ENLARGEMENTS', page: 33 }
+                { shortname: 'A4.1', name: 'FIRST (1ST) FLOOR CORE PLAN ENLARGEMENT' },
+                { shortname: 'A4.2', name: 'FIRST (1ST) FLOOR PLAN ENLARGEMENT' },
+                { shortname: 'A4.3', name: 'MISC PLAN ENLARGEMENTS' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'WALL', sheets: [
-                { shortname: 'A5.1', name: 'WALL TYPES & DETAILS', page: 34 }, { shortname: 'A5.2', name: 'ASSEMBLY PENETRATIONS', page: 35 },
-                { shortname: 'A5.3', name: 'WALL SECTIONS & DETAILS', page: 36 }, { shortname: 'A5.4', name: 'STAIR PLANS & DETAILS', page: 37 },
-                { shortname: 'A5.5', name: 'STAIR SECTION & DETAILS', page: 38 }, { shortname: 'A5.5b', name: 'STAIR SECTION & DETAILS', page: 39 },
-                { shortname: 'A5.6', name: 'ELEVATOR SECTION & DETAILS', page: 40 }, { shortname: 'A5.7', name: 'LINEN CHUTE SECTION & DETAILS', page: 41 },
-                { shortname: 'A5.8', name: 'CANOPY SECTIONS DETAILS', page: 42 }, { shortname: 'A5.9', name: 'DUMPSTER SECTIONS & DETAILS', page: 43 },
-                { shortname: 'A5.10', name: 'MISC. SECTIONS & DETAILS', page: 44 }, { shortname: 'A5.11', name: 'ENLARGED & MISC. DETAILS', page: 45 }
+                { shortname: 'A5.1', name: 'WALL TYPES & DETAILS' }, { shortname: 'A5.2', name: 'ASSEMBLY PENETRATIONS' },
+                { shortname: 'A5.3', name: 'WALL SECTIONS & DETAILS' }, { shortname: 'A5.4', name: 'STAIR PLANS & DETAILS' },
+                { shortname: 'A5.5', name: 'STAIR SECTION & DETAILS' }, { shortname: 'A5.5b', name: 'STAIR SECTION & DETAILS' },
+                { shortname: 'A5.6', name: 'ELEVATOR SECTION & DETAILS' }, { shortname: 'A5.7', name: 'LINEN CHUTE SECTION & DETAILS' },
+                { shortname: 'A5.8', name: 'CANOPY SECTIONS DETAILS' }, { shortname: 'A5.9', name: 'DUMPSTER SECTIONS & DETAILS' },
+                { shortname: 'A5.10', name: 'MISC. SECTIONS & DETAILS' }, { shortname: 'A5.11', name: 'ENLARGED & MISC. DETAILS' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'INTERIOR ELEVATIONS', sheets: [
-                { shortname: 'A6.1', name: 'INTERIOR ELEVATIONS, DETAILS SECTIONS', page: 46 }, { shortname: 'A6.2', name: 'BREAKFAST DETAILS & ELEVATIONS', page: 47 },
-                { shortname: 'A6.3', name: 'EXERCISE PUBLIC REST ROOM ELEVATIONS', page: 48 }, { shortname: 'A6.4', name: 'CONNECT & PRINT DETAILS ELEVATIONS', page: 49 },
-                { shortname: 'A6.5', name: 'LOBBY RETAIL DETAILS & ELEVATIONS', page: 50 }, { shortname: 'A6.6', name: 'REGISTRATION DETAILS & ELEVATIONS', page: 51 },
-                { shortname: 'A6.7', name: 'REGISTRATION DETAILS & ELEVATIONS', page: 52 }, { shortname: 'A6.8', name: 'FOOD SERVICE EQUIPMENT INT. ELEV. & SECTIONS', page: 53 },
-                { shortname: 'A6.9', name: 'INTERIOR ELEVATIONS & DETAILS', page: 54 }, { shortname: 'A6.10', name: 'HEARTH DETAILS & POOL INT. ELEVATIONS', page: 55 }
+                { shortname: 'A6.1', name: 'INTERIOR ELEVATIONS, DETAILS SECTIONS' }, { shortname: 'A6.2', name: 'BREAKFAST DETAILS & ELEVATIONS' },
+                { shortname: 'A6.3', name: 'EXERCISE PUBLIC REST ROOM ELEVATIONS' }, { shortname: 'A6.4', name: 'CONNECT & PRINT DETAILS ELEVATIONS' },
+                { shortname: 'A6.5', name: 'LOBBY RETAIL DETAILS & ELEVATIONS' }, { shortname: 'A6.6', name: 'REGISTRATION DETAILS & ELEVATIONS' },
+                { shortname: 'A6.7', name: 'REGISTRATION DETAILS & ELEVATIONS' }, { shortname: 'A6.8', name: 'FOOD SERVICE EQUIPMENT INT. ELEV. & SECTIONS' },
+                { shortname: 'A6.9', name: 'INTERIOR ELEVATIONS & DETAILS' }, { shortname: 'A6.10', name: 'HEARTH DETAILS & POOL INT. ELEVATIONS' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'DOOR & WINDOW', sheets: [
-                { shortname: 'A7.1', name: 'DOOR SCHEDULE & DETAILS', schedule: '<strong>Door Schedule:</strong> Comprehensive list of all doors, including ID, size, type, material, fire rating, hardware set, and remarks.', page: 56 },
-                { shortname: 'A7.2', name: 'WINDOW DETAILS & ROOM FINISH SCHEDULE', schedule: '<strong>Window Schedule:</strong> Details all windows with ID, size, type, material, glazing, and remarks.<br><strong>Room Finish Schedule:</strong> Specifies floor, base, wall, and ceiling finishes for each room.', page: 57 }
+                { shortname: 'A7.1', name: 'DOOR SCHEDULE & DETAILS', schedule: '<strong>Door Schedule:</strong> Comprehensive list of all doors, including ID, size, type, material, fire rating, hardware set, and remarks.' },
+                { shortname: 'A7.2', name: 'WINDOW DETAILS & ROOM FINISH SCHEDULE', schedule: '<strong>Window Schedule:</strong> Details all windows with ID, size, type, material, glazing, and remarks.<br><strong>Room Finish Schedule:</strong> Specifies floor, base, wall, and ceiling finishes for each room.' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'CEILING', sheets: [
-                { shortname: 'A8.1', name: 'FIRST (1ST) & SECOND (2ND) FLOOR REFLECTED CEILING PLAN', page: 58 },
-                { shortname: 'A8.1a', name: 'FIRST (1ST) FLOOR CORE RCP ENLARGEMENT', page: 59 }, { shortname: 'A8.1b', name: 'FIRST (1ST) FLOOR RCP ENLARGEMENT', page: 60 },
-                { shortname: 'A8.2', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR REFLECTED CEILING PLAN', page: 61 }
+                { shortname: 'A8.1', name: 'FIRST (1ST) & SECOND (2ND) FLOOR REFLECTED CEILING PLAN' },
+                { shortname: 'A8.1a', name: 'FIRST (1ST) FLOOR CORE RCP ENLARGEMENT' }, { shortname: 'A8.1b', name: 'FIRST (1ST) FLOOR RCP ENLARGEMENT' },
+                { shortname: 'A8.2', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR REFLECTED CEILING PLAN' }
             ]},
             { category: 'ARCHITECTURAL', subcategory: 'FF&E', sheets: [
-                { shortname: 'A9.1', name: 'FIRST (1ST) FLOOR FF&E CORE ENLARGEMENT', schedule: '<strong>FF&E Schedule:</strong> Lists all loose furniture, decorative fixtures, and equipment by item number, description, manufacturer, model, and quantity.', page: 62 },
-                { shortname: 'A9.2', name: 'FIRST (1ST) FLOOR FF&E PLAN ENLARGEMENT', page: 63 },
-                { shortname: 'A9.3', name: 'MISC FF&E ENLARGEMENTS', page: 64 }
+                { shortname: 'A9.1', name: 'FIRST (1ST) FLOOR FF&E CORE ENLARGEMENT', schedule: '<strong>FF&E Schedule:</strong> Lists all loose furniture, decorative fixtures, and equipment by item number, description, manufacturer, model, and quantity.' },
+                { shortname: 'A9.2', name: 'FIRST (1ST) FLOOR FF&E PLAN ENLARGEMENT' },
+                { shortname: 'A9.3', name: 'MISC FF&E ENLARGEMENTS' }
             ]},
 
             { category: 'STRUCTURAL', subcategory: 'OVERALL', sheets: [
-                { shortname: 'S1.0', name: 'STRUCTURAL NOTES, SCHEDULES & DETAILS', schedule: '<strong>General Structural Notes:</strong> Often contains tabular data for material properties, design loads, or construction requirements.<br><strong>Foundation Schedule:</strong> Details various foundation elements with dimensions, rebar, and concrete strength.<br><strong>Column Schedule:</strong> Lists vertical structural members with sizes, materials, and reinforcement.<br><strong>Beam Schedule:</strong> Lists horizontal structural members with sizes, materials, and reinforcement.<br><strong>Steel Member Schedule:</strong> Lists steel shapes and their properties.<br><strong>Concrete Schedule:</strong> Specifications for different concrete mixes used on the project.', page: 65 },
-                { shortname: 'S1.1', name: 'FOUNDATION PLAN', page: 66 }, { shortname: 'S1.2', name: 'SECOND (2ND) FLOOR FRAMING PLAN', page: 67 },
-                { shortname: 'S1.3', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR FRAMING PLAN', page: 68 }, { shortname: 'S1.4', name: 'ROOF FRAMING PLAN', page: 69 }
+                { shortname: 'S1.0', name: 'STRUCTURAL NOTES, SCHEDULES & DETAILS', schedule: '<strong>General Structural Notes:</strong> Often contains tabular data for material properties, design loads, or construction requirements.<br><strong>Foundation Schedule:</strong> Details various foundation elements with dimensions, rebar, and concrete strength.<br><strong>Column Schedule:</strong> Lists vertical structural members with sizes, materials, and reinforcement.<br><strong>Beam Schedule:</strong> Lists horizontal structural members with sizes, materials, and reinforcement.<br><strong>Steel Member Schedule:</strong> Lists steel shapes and their properties.<br><strong>Concrete Schedule:</strong> Specifications for different concrete mixes used on the project.' },
+                { shortname: 'S1.1', name: 'FOUNDATION PLAN' }, { shortname: 'S1.2', name: 'SECOND (2ND) FLOOR FRAMING PLAN' },
+                { shortname: 'S1.3', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR FRAMING PLAN' }, { shortname: 'S1.4', name: 'ROOF FRAMING PLAN' }
             ]},
-            { category: 'STRUCTURAL', subcategory: 'FOUNDATION', sheets: [{ shortname: 'S2.1', name: 'FOUNDATION DETAILS', page: 70 }] },
+            { category: 'STRUCTURAL', subcategory: 'FOUNDATION', sheets: [{ shortname: 'S2.1', name: 'FOUNDATION DETAILS' }] },
             { category: 'STRUCTURAL', subcategory: 'STEEL ELEVATIONS', sheets: [
-                { shortname: 'S3.1', name: 'STEEL ELEVATIONS DETAILS', page: 71 }, { shortname: 'S3.2', name: 'STEEL ELEVATIONS & DETAILS', page: 72 }
+                { shortname: 'S3.1', name: 'STEEL ELEVATIONS DETAILS' }, { shortname: 'S3.2', name: 'STEEL ELEVATIONS & DETAILS' }
             ]},
             { category: 'STRUCTURAL', subcategory: 'SHEAR WALL, FRAMING & DIAPHRAGM', sheets: [
-                { shortname: 'S4.1', name: 'SHEAR WALL & FRAMING DETAILS', page: 73 }, { shortname: 'S4.2', name: 'SHEAR WALL & DIAPHRAGM PETAILS', page: 74 }
+                { shortname: 'S4.1', name: 'SHEAR WALL & FRAMING DETAILS' }, { shortname: 'S4.2', name: 'SHEAR WALL & DIAPHRAGM PETAILS' }
             ]},
             
             { category: 'PLUMBING', subcategory: 'OVERALL', sheets: [
-                { shortname: 'P1.0', name: 'PLUMBING SCHEDULE DETAILS', schedule: '<strong>Plumbing Fixture Schedule:</strong> Lists all plumbing fixtures with tag, type, manufacturer, model, and remarks.<br><strong>Plumbing Equipment Schedule:</strong> Details water heaters, pumps, water treatment units, etc.<br><strong>Drainage Structure Schedule:</strong> Specific details for interior floor drains, cleanouts, etc.', page: 75 },
-                { shortname: 'P1.1a', name: 'FIRST (1ST) FLOOR BELOW SLAB PLUMBING PLAN', page: 76 }, { shortname: 'P1.1b', name: 'FIRST (1ST) FLOOR ABOVE SLAB PLUMBING PLAN', page: 77 },
-                { shortname: 'P1.2', name: 'SECOND (2ND) FLOOR PLUMBING PLAN', page: 78 }, { shortname: 'P1.3', name: 'THIRD (3RD) FLOOR PLUMBING PLAN', page: 79 },
-                { shortname: 'P1.4', name: 'FOURTH (4TH) FLOOR PLUMBING PLAN', page: 80 }, { shortname: 'P1.5', name: 'ROOF DRAINAGE PLAN', page: 81 }
+                { shortname: 'P1.0', name: 'PLUMBING SCHEDULE DETAILS', schedule: '<strong>Plumbing Fixture Schedule:</strong> Lists all plumbing fixtures with tag, type, manufacturer, model, and remarks.<br><strong>Plumbing Equipment Schedule:</strong> Details water heaters, pumps, water treatment units, etc.<br><strong>Drainage Structure Schedule:</strong> Specific details for interior floor drains, cleanouts, etc.' },
+                { shortname: 'P1.1a', name: 'FIRST (1ST) FLOOR BELOW SLAB PLUMBING PLAN' }, { shortname: 'P1.1b', name: 'FIRST (1ST) FLOOR ABOVE SLAB PLUMBING PLAN' },
+                { shortname: 'P1.2', name: 'SECOND (2ND) FLOOR PLUMBING PLAN' }, { shortname: 'P1.3', name: 'THIRD (3RD) FLOOR PLUMBING PLAN' },
+                { shortname: 'P1.4', name: 'FOURTH (4TH) FLOOR PLUMBING PLAN' }, { shortname: 'P1.5', name: 'ROOF DRAINAGE PLAN' }
             ]},
-            { category: 'PLUMBING', subcategory: 'ISOMETRIC', sheets: [{ shortname: 'P2.1', name: 'ISOMETRIC PLAN', page: 82 }] },
+            { category: 'PLUMBING', subcategory: 'ISOMETRIC', sheets: [{ shortname: 'P2.1', name: 'ISOMETRIC PLAN' }] },
             { category: 'PLUMBING', subcategory: 'WATER DISTRIBUTION', sheets: [
-                { shortname: 'P3.1', name: 'FIRST (1ST) FLOOR WATER DISTRIBUTION PLAN', page: 83 }, { shortname: 'P3.2', name: 'SECOND (2ND) FLOOR WATER DISTRIBUTION PLAN', page: 84 },
-                { shortname: 'P3.3', name: 'THIRD (3RD) FLOOR WATER DISTRIBUTION PLAN', page: 85 }, { shortname: 'P3.4', name: 'FOURTH (4TH) FLOOR WATER DISTRIBUTION PLAN', page: 86 }
+                { shortname: 'P3.1', name: 'FIRST (1ST) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.2', name: 'SECOND (2ND) FLOOR WATER DISTRIBUTION PLAN' },
+                { shortname: 'P3.3', name: 'THIRD (3RD) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.4', name: 'FOURTH (4TH) FLOOR WATER DISTRIBUTION PLAN' }
             ]},
             { category: 'PLUMBING', subcategory: 'GAS, STORM, DRAINAGE PLAN', sheets: [
-                { shortname: 'P4.1', name: 'FIRST (1ST) FLOOR GAS, STORM, DRAINAGE PLAN', schedule: '<strong>Gas Appliance Schedule:</strong> Lists gas-fired equipment (e.g., boilers, water heaters) with BTU ratings.', page: 87 }
+                { shortname: 'P4.1', name: 'FIRST (1ST) FLOOR GAS, STORM, DRAINAGE PLAN', schedule: '<strong>Gas Appliance Schedule:</strong> Lists gas-fired equipment (e.g., boilers, water heaters) with BTU ratings.' }
             ]},
             
             { category: 'MECHANICAL', subcategory: 'OVERALL', sheets: [
-                { shortname: 'M1.0', name: 'MECHANICAL SCHEDULE DETAILS', schedule: '<strong>Mechanical Equipment Schedule:</strong> Lists HVAC units (RTUs, AHUs, split systems, exhaust fans) with capacity, airflow, electrical data, and other specifics.<br><strong>Air Device Schedule:</strong> Details grilles, registers, and diffusers with type, size, airflow, and location.<br><strong>Fan Schedule:</strong> Specific details for various fans.<br><strong>Coil Schedule:</strong> Details heating and cooling coils within HVAC systems.', page: 88 },
-                { shortname: 'M1.1', name: 'FIRST (1ST) FLOOR MECHANICAL PLAN', page: 89 }, { shortname: 'M1.2', name: 'SECOND (2ND) FLOOR MECHANICAL PLAN', page: 90 },
-                { shortname: 'M1.3', name: 'THIRD (3RD) FLOOR MECHANICAL PLAN', page: 91 }, { shortname: 'M1.4', name: 'FOURTH (4TH) FLOOR MECHANICAL PLAN', page: 92 }, { shortname: 'M1.5', name: 'ROOF MECHANICAL PLAN', page: 93 }
+                { shortname: 'M1.0', name: 'MECHANICAL SCHEDULE DETAILS', schedule: '<strong>Mechanical Equipment Schedule:</strong> Lists HVAC units (RTUs, AHUs, split systems, exhaust fans) with capacity, airflow, electrical data, and other specifics.<br><strong>Air Device Schedule:</strong> Details grilles, registers, and diffusers with type, size, airflow, and location.<br><strong>Fan Schedule:</strong> Specific details for various fans.<br><strong>Coil Schedule:</strong> Details heating and cooling coils within HVAC systems.' },
+                { shortname: 'M1.1', name: 'FIRST (1ST) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.2', name: 'SECOND (2ND) FLOOR MECHANICAL PLAN' },
+                { shortname: 'M1.3', name: 'THIRD (3RD) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.4', name: 'FOURTH (4TH) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.5', name: 'ROOF MECHANICAL PLAN' }
             ]},
-            { category: 'MECHANICAL', subcategory: 'ENLARGEMENT', sheets: [{ shortname: 'M2.1', name: 'CORE MECHANICAL ENLARGEMENT', page: 94 }] },
+            { category: 'MECHANICAL', subcategory: 'ENLARGEMENT', sheets: [{ shortname: 'M2.1', name: 'CORE MECHANICAL ENLARGEMENT' }] },
 
             { category: 'ELECTRICAL', subcategory: 'OVERALL', sheets: [
-                { shortname: 'E1.0', name: 'SITE LIGHTING PLAN', schedule: '<strong>Site Lighting Fixture Schedule:</strong> A schedule specifically for exterior lighting fixtures.', page: 94 },
-                { shortname: 'E1.0a', name: 'SITE PHOTOMETRIC PLAN', page: 94 }, { shortname: 'E1.0b', name: 'SITE PLAN DETAILS', page: 95 },
-                { shortname: 'E1.1', name: 'FIRST (1ST) FLOOR ELECTRICAL PLAN', page: 96 }, { shortname: 'E1.2', name: 'SECOND (2ND) & THIRD (3RD) FLOOR ELECTRICAL PLAN', page: 97 },
-                { shortname: 'E1.3', name: 'FOURTH (4TH) FLOOR & ROOF ELECTRICAL PLAN', page: 98 }
+                { shortname: 'E1.0', name: 'SITE LIGHTING PLAN', schedule: '<strong>Site Lighting Fixture Schedule:</strong> A schedule specifically for exterior lighting fixtures.' },
+                { shortname: 'E1.0a', name: 'SITE PHOTOMETRIC PLAN' }, { shortname: 'E1.0b', name: 'SITE PLAN DETAILS' },
+                { shortname: 'E1.1', name: 'FIRST (1ST) FLOOR ELECTRICAL PLAN' }, { shortname: 'E1.2', name: 'SECOND (2ND) & THIRD (3RD) FLOOR ELECTRICAL PLAN' },
+                { shortname: 'E1.3', name: 'FOURTH (4TH) FLOOR & ROOF ELECTRICAL PLAN' }
             ]},
             { category: 'ELECTRICAL', subcategory: 'ENLARGEMENT', sheets: [
-                { shortname: 'E2.1', name: 'CORE ENLARGEMENT POWER PLAN', page: 99 }, { shortname: 'E2.2', name: 'CORE ENLARGEMENT LIGHT PLAN', page: 100 },
-                { shortname: 'E2.3', name: 'POOL/FITNESS ENLARGEMENT POWER PLAN', page: 101 }, { shortname: 'E2.4', name: 'POOL/FITNESS ENLARGEMENT LIGHT PLAN', page: 102 },
-                { shortname: 'E2.5', name: 'LAUNDRY ENLARGEMENT POWER/LIGHT PLAN', page: 103 }
+                { shortname: 'E2.1', name: 'CORE ENLARGEMENT POWER PLAN' }, { shortname: 'E2.2', name: 'CORE ENLARGEMENT LIGHT PLAN' },
+                { shortname: 'E2.3', name: 'POOL/FITNESS ENLARGEMENT POWER PLAN' }, { shortname: 'E2.4', name: 'POOL/FITNESS ENLARGEMENT LIGHT PLAN' },
+                { shortname: 'E2.5', name: 'LAUNDRY ENLARGEMENT POWER/LIGHT PLAN' }
             ]},
             { category: 'ELECTRICAL', subcategory: 'PANEL SCHEDULES', sheets: [
-                { shortname: 'E3.1', name: 'PANEL SCHEDULES', schedule: '<strong>Panel Schedules:</strong> Detailed tables for electrical panels, including circuit numbers, descriptions, breaker sizes, and connected loads.', page: 104 },
-                { shortname: 'E3.2', name: 'PANEL SCHEDULES', page: 105 }
+                { shortname: 'E3.1', name: 'PANEL SCHEDULES', schedule: '<strong>Panel Schedules:</strong> Detailed tables for electrical panels, including circuit numbers, descriptions, breaker sizes, and connected loads.' },
+                { shortname: 'E3.2', name: 'PANEL SCHEDULES' }
             ]},
-            { category: 'ELECTRICAL', subcategory: 'SINGLE LINE', sheets: [{ shortname: 'E4.1', name: 'ELECTRICAL SINGLE LINE DIAGRAM', page: 106 }] },
+            { category: 'ELECTRICAL', subcategory: 'SINGLE LINE', sheets: [{ shortname: 'E4.1', name: 'ELECTRICAL SINGLE LINE DIAGRAM' }] },
             { category: 'ELECTRICAL', subcategory: 'LIGHT FIXTURES, DIAGRAMS & LEGENDS', sheets: [
-                { shortname: 'E5.1', name: 'LIGHT FIXTURE SCHEDULE', schedule: '<strong>Light Fixture Schedule:</strong> Lists interior and exterior light fixtures by type, lamp, wattage, voltage, mounting, and remarks.', page: 107 },
-                { shortname: 'E5.2', name: 'ELECTRICAL DIAGRAMS & DETAILS', page: 108 },
-                { shortname: 'E5.3', name: 'ELECTRICAL LEGENDS & NOTES', schedule: '<strong>Electrical Legend Table:</strong> Defines symbols used on the drawings.<br><strong>Equipment Connection Schedule:</strong> Lists electrical equipment requiring power connections, showing associated circuits and breakers.<br><strong>Data/Communications Schedule:</strong> If applicable, details network drops, telephone outlets and other low-voltage connections.', page: 109 }
+                { shortname: 'E5.1', name: 'LIGHT FIXTURE SCHEDULE', schedule: '<strong>Light Fixture Schedule:</strong> Lists interior and exterior light fixtures by type, lamp, wattage, voltage, mounting, and remarks.' },
+                { shortname: 'E5.2', name: 'ELECTRICAL DIAGRAMS & DETAILS' },
+                { shortname: 'E5.3', name: 'ELECTRICAL LEGENDS & NOTES', schedule: '<strong>Electrical Legend Table:</strong> Defines symbols used on the drawings.<br><strong>Equipment Connection Schedule:</strong> Lists electrical equipment requiring power connections, showing associated circuits and breakers.<br><strong>Data/Communications Schedule:</strong> If applicable, details network drops, telephone outlets and other low-voltage connections.' }
             ]},
-            { category: 'SPECIFICATIONS', subcategory: 'SPECIFICATIONS', sheets: [{ shortname: 'SC-1', name: 'SPECIFICATIONS', page: 110 }] }
+            { category: 'SPECIFICATIONS', subcategory: 'SPECIFICATIONS', sheets: [{ shortname: 'SC-1', name: 'SPECIFICATIONS' }] }
         ];
 
-        // The base PDF filename for all sheets
-        const basePdfFileName = 'FairfieldPendletonINDrawing.pdf';
-
-        // This function is no longer used for creating unique PDF filenames
-        // but can be kept if future needs involve dynamic PDF naming.
-        function createFileName(category, subcategory, shortname, name) {
-            const cleanCategory = category.toUpperCase().replace(/[^A-Z0-9]/g, '_');
-            const cleanSubcategory = subcategory.toUpperCase().replace(/[^A-Z0-9]/g, '_');
-            const cleanShortname = shortname.toUpperCase().replace(/[^A-Z0-9]/g, '_');
-            const cleanName = name.toUpperCase().replace(/[^A-Z0-9\s]/g, '').replace(/\s+/g, '_');
-            // This function now just returns the base PDF name as all sheets are in one PDF
-            return basePdfFileName;
-        }
+        // Map categories to their respective PDF file names
+        const categoryPdfMap = {
+            'CIVIL': 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf',
+            'ARCHITECTURAL': 'Drawings/Fairfield_Pendleton_IN_02_Architectural.pdf',
+            'STRUCTURAL': 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf',
+            'PLUMBING': 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf',
+            'MECHANICAL': 'Drawings/Fairfield_Pendleton_IN_05_Mechanical.pdf',
+            'ELECTRICAL': 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf',
+            'SPECIFICATIONS': 'Drawings/Fairfield_Pendleton_IN_07_Specifications.pdf',
+        };
 
         function buildDrawingIndex() {
             const container = document.getElementById('drawing-container');
@@ -246,7 +243,6 @@
                 } else if (category === 'ELECTRICAL') {
                     categoryTitle += ' (E-Sheets)';
                 }
-                // 'SPECIFICATIONS' remains without a sheet prefix as it was not requested.
 
                 sectionHeader.innerHTML = `<h2 class="text-xl font-semibold text-blue-300">${categoryTitle}</h2>
                                            <svg class="w-6 h-6 text-blue-300 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
@@ -261,16 +257,31 @@
                 sectionContent.id = `content-${categoryId}`;
                 sectionContent.className = 'section-content px-4 pb-4';
 
-                groupedData[category].forEach(subcat => {
+                let currentPageCounter = 1; // Initialize page counter for each category
+
+                groupedData[category].forEach((subcat, subcatIndex) => {
                     const subgroupSection = document.createElement('div');
                     subgroupSection.className = 'subgroup-section mt-4 pt-4 border-t border-gray-700';
                     
-                    const isSingleSheet = subcat.sheets.length === 1;
-                    const compilationText = isSingleSheet ? '' : ' (Compilation)';
+                    // The "(Compilation)" text is now permanently removed from subgroup titles
+                    const compilationText = '';
                     
-                    // Link for the subgroup title will go to the first page of the first sheet in that subgroup
-                    const subgroupLinkPage = subcat.sheets[0] && subcat.sheets[0].page ? subcat.sheets[0].page : '';
-                    const compilationLink = subgroupLinkPage ? `${basePdfFileName}#page=${subgroupLinkPage}` : basePdfFileName;
+                    // Get the category-specific PDF for the subgroup link
+                    const categoryPdf = categoryPdfMap[category];
+                    
+                    // Determine the page number for the subgroup link based on cumulative sheets
+                    let subgroupStartPage = currentPageCounter;
+                    if (subcatIndex === 0) {
+                        subgroupStartPage = 1; // First subgroup of a category starts at page 1
+                    } else {
+                        // For subsequent subgroups, the starting page is the page number of the
+                        // first sheet of the current subgroup in the original page sequence.
+                        // This logic relies on the drawingData order reflecting the page order.
+                        // Since we are iterating through ordered subcategories,
+                        // currentPageCounter will correctly hold the starting page for the current subgroup.
+                    }
+
+                    const compilationLink = categoryPdf ? `${categoryPdf}#page=${subgroupStartPage}` : '#';
 
                     subgroupSection.innerHTML = `<h4 class="subgroup-title text-lg font-semibold text-blue-300 mb-2">
                                                     <a href="${compilationLink}" target="_blank" class="hover:underline">${subcat.subcategory}${compilationText}</a>
@@ -280,17 +291,13 @@
                     drawingList.className = 'drawing-list space-y-2';
 
                     subcat.sheets.forEach(sheet => {
-                        // Construct the URL with page number if available
-                        const pdfUrl = sheet.page ? `${basePdfFileName}#page=${sheet.page}` : basePdfFileName;
-
                         const drawingItemWrapper = document.createElement('div');
                         drawingItemWrapper.className = 'drawing-item-wrapper';
 
                         const drawingItem = document.createElement('div');
-                        drawingItem.className = 'drawing-item';
-                        drawingItem.innerHTML = `<a href="${pdfUrl}" target="_blank" class="text-blue-400 hover:text-blue-200 transition">
-                                                    <strong class="font-mono bg-gray-700 px-2 py-1 rounded-md text-sm text-gray-100">${sheet.shortname}</strong>: ${sheet.name}
-                                                 </a>`;
+                        // Individual sheet items no longer have links
+                        drawingItem.className = 'drawing-item text-gray-200'; // Set text color for non-linked items
+                        drawingItem.innerHTML = `<strong class="font-mono bg-gray-700 px-2 py-1 rounded-md text-sm text-gray-100">${sheet.shortname}</strong>: ${sheet.name}`;
                         drawingItemWrapper.appendChild(drawingItem);
 
                         if (sheet.schedule) {
@@ -300,6 +307,7 @@
                             drawingItemWrapper.appendChild(scheduleInfo);
                         }
                         drawingList.appendChild(drawingItemWrapper);
+                        currentPageCounter++; // Increment for the next sheet
                     });
                     
                     subgroupSection.appendChild(drawingList);
