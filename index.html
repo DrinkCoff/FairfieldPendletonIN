@@ -61,38 +61,39 @@
 
     <script>
         const drawingData = [
-            { category: 'CIVIL', subcategory: 'COVER SHEET', sheets: [{ shortname: 'C000', name: 'COVER SHEET' }] },
-            { category: 'CIVIL', subcategory: 'EXISTING SITE CONDITIONS', sheets: [{ shortname: 'C100', name: 'EXISTING SITE CONDITIONS' }] },
-            { category: 'CIVIL', subcategory: 'SITE PLAN', sheets: [{ shortname: 'C200', name: 'SITE PLAN' }] },
-            { category: 'CIVIL', subcategory: 'GRADING & EROSION', sheets: [
+            { category: 'CIVIL', subcategory: 'COVER SHEET', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C000', name: 'COVER SHEET' }] },
+            { category: 'CIVIL', subcategory: 'EXISTING SITE CONDITIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C100', name: 'EXISTING SITE CONDITIONS' }] },
+            { category: 'CIVIL', subcategory: 'SITE PLAN', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C200', name: 'SITE PLAN' }] },
+            { category: 'CIVIL', subcategory: 'GRADING & EROSION', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [
                 { shortname: 'C300', name: 'GRADING PLAN', schedule: '<strong>Erosion Control Device Schedule:</strong> Details various erosion control measures (e.g., silt fence, inlet protection) and their specifications.' },
                 { shortname: 'C301', name: 'EROSION CONTROL PLAN' },
                 { shortname: 'C302', name: 'EROSION CONTROL / SWPPP NOTES' },
                 { shortname: 'C303', name: 'EROSION CONTROL DETAILS' }
             ]},
-            { category: 'CIVIL', subcategory: 'UTILITY', sheets: [
+            { category: 'CIVIL', subcategory: 'UTILITY', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [
                 { shortname: 'C400', name: 'UTILITY PLAN', schedule: '<strong>Storm Sewer Structure Schedule:</strong> Lists catch basins, manholes, and other storm drainage elements with their types, sizes, and invert elevations.<br><strong>Sanitary Sewer Structure Schedule:</strong> Lists manholes and other sanitary sewer elements with their types and invert elevations.<br><strong>Utility Connection Schedule:</strong> Details connections to municipal utilities.' }
             ]},
-            { category: 'CIVIL', subcategory: 'CONSTRUCTION', sheets: [{ shortname: 'C500', name: 'CONSTRUCTION DETAILS' }] },
-            { category: 'CIVIL', subcategory: 'LANDSCAPE', sheets: [
+            { category: 'CIVIL', subcategory: 'CONSTRUCTION', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C500', name: 'CONSTRUCTION DETAILS' }] },
+            { category: 'CIVIL', subcategory: 'LANDSCAPE', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [
                 { shortname: 'C600', name: 'LANDSCAPE PLAN', schedule: '<strong>Planting Schedule:</strong> Lists all trees, shrubs, and groundcovers by quantity, botanical and common names, size, and planting notes.<br><strong>Site Furnishing Schedule:</strong> Details benches, bike racks, trash receptacles, etc.' }
             ]},
-            { category: 'CIVIL', subcategory: 'LIGHTING PHOTOMETRIC', sheets: [{ shortname: 'E101', name: 'LIGHTING PHOTOMETRIC' }] },
+            { category: 'CIVIL', subcategory: 'LIGHTING PHOTOMETRIC', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'E101', name: 'LIGHTING PHOTOMETRIC' }] },
             
-            { category: 'ARCHITECTURAL', subcategory: 'HIGH LEVEL', sheets: [
+            // ARCHITECTURAL category, with updated PDF references and re-integrated HIGH LEVEL
+            { category: 'ARCHITECTURAL', subcategory: 'HIGH LEVEL', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Highlevel.pdf', sheets: [
                 { shortname: 'T-1', name: 'TITLE SHEET' },
                 { shortname: 'T-2', name: 'OCCUPANCY FIRE RATING PLANS & DETAILS' },
                 { shortname: 'T-3', name: 'STRUCTURAL FIRE RATING PLANS & DETAILS' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'FLOOR PLAN', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'FLOOR PLAN', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_FloorPlanElevations.pdf', sheets: [
                 { shortname: 'A1.1', name: 'FIRST (1ST) FLOOR PLAN', schedule: '<strong>Room Mix Matrix:</strong> Details room types, quantities, and areas.<br><strong>Room Numbering/Naming Schedule:</strong> A simple list of room numbers and their corresponding names.' },
                 { shortname: 'A1.2', name: 'SECOND (2ND) FLOOR PLAN' },
                 { shortname: 'A1.3', name: 'THIRD (3RD) FLOOR PLAN' },
                 { shortname: 'A1.4', name: 'FOURTH (4TH) FLOOR PLAN' },
                 { shortname: 'A1.5', name: 'ROOF PLAN' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'EXTERIOR ELEVATIONS', sheets: [{ shortname: 'A2.1', name: 'EXTERIOR ELEVATIONS' }] },
-            { category: 'ARCHITECTURAL', subcategory: 'ROOM', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'EXTERIOR ELEVATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_FloorPlanElevations.pdf', sheets: [{ shortname: 'A2.1', name: 'EXTERIOR ELEVATIONS' }] },
+            { category: 'ARCHITECTURAL', subcategory: 'ROOM', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A3.0a', name: 'GUESTROOM DETAILS & NOTES' },
                 { shortname: 'A3.0b', name: 'GUESTROOM DETAILS & NOTES' },
                 { shortname: 'A3.0c', name: 'GUESTROOM ENLARGED CASEWORK & DETAILS', schedule: '<strong>Casework Schedule:</strong> Lists custom millwork and built-in elements with dimensions, materials, and finishes.' },
@@ -105,12 +106,12 @@
                 { shortname: 'A3.7', name: 'QUEEN QUEEN SUITE ENLARGEMENT' },
                 { shortname: 'A3.8', name: 'ACCESSIBLE QUEEN QUEEN SUITE ENLARGEMENT' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'ENLARGEMENT', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'ENLARGEMENT', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A4.1', name: 'FIRST (1ST) FLOOR CORE PLAN ENLARGEMENT' },
                 { shortname: 'A4.2', name: 'FIRST (1ST) FLOOR PLAN ENLARGEMENT' },
                 { shortname: 'A4.3', name: 'MISC PLAN ENLARGEMENTS' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'WALL', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'WALL', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A5.1', name: 'WALL TYPES & DETAILS' }, { shortname: 'A5.2', name: 'ASSEMBLY PENETRATIONS' },
                 { shortname: 'A5.3', name: 'WALL SECTIONS & DETAILS' }, { shortname: 'A5.4', name: 'STAIR PLANS & DETAILS' },
                 { shortname: 'A5.5', name: 'STAIR SECTION & DETAILS' }, { shortname: 'A5.5b', name: 'STAIR SECTION & DETAILS' },
@@ -118,108 +119,109 @@
                 { shortname: 'A5.8', name: 'CANOPY SECTIONS DETAILS' }, { shortname: 'A5.9', name: 'DUMPSTER SECTIONS & DETAILS' },
                 { shortname: 'A5.10', name: 'MISC. SECTIONS & DETAILS' }, { shortname: 'A5.11', name: 'ENLARGED & MISC. DETAILS' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'INTERIOR ELEVATIONS', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'INTERIOR ELEVATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A6.1', name: 'INTERIOR ELEVATIONS, DETAILS SECTIONS' }, { shortname: 'A6.2', name: 'BREAKFAST DETAILS & ELEVATIONS' },
                 { shortname: 'A6.3', name: 'EXERCISE PUBLIC REST ROOM ELEVATIONS' }, { shortname: 'A6.4', name: 'CONNECT & PRINT DETAILS ELEVATIONS' },
                 { shortname: 'A6.5', name: 'LOBBY RETAIL DETAILS & ELEVATIONS' }, { shortname: 'A6.6', name: 'REGISTRATION DETAILS & ELEVATIONS' },
                 { shortname: 'A6.7', name: 'REGISTRATION DETAILS & ELEVATIONS' }, { shortname: 'A6.8', name: 'FOOD SERVICE EQUIPMENT INT. ELEV. & SECTIONS' },
                 { shortname: 'A6.9', name: 'INTERIOR ELEVATIONS & DETAILS' }, { shortname: 'A6.10', name: 'HEARTH DETAILS & POOL INT. ELEVATIONS' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'DOOR & WINDOW', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'DOOR & WINDOW', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A7.1', name: 'DOOR SCHEDULE & DETAILS', schedule: '<strong>Door Schedule:</strong> Comprehensive list of all doors, including ID, size, type, material, fire rating, hardware set, and remarks.' },
                 { shortname: 'A7.2', name: 'WINDOW DETAILS & ROOM FINISH SCHEDULE', schedule: '<strong>Window Schedule:</strong> Details all windows with ID, size, type, material, glazing, and remarks.<br><strong>Room Finish Schedule:</strong> Specifies floor, base, wall, and ceiling finishes for each room.' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'CEILING', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'CEILING', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A8.1', name: 'FIRST (1ST) & SECOND (2ND) FLOOR REFLECTED CEILING PLAN' },
                 { shortname: 'A8.1a', name: 'FIRST (1ST) FLOOR CORE RCP ENLARGEMENT' }, { shortname: 'A8.1b', name: 'FIRST (1ST) FLOOR RCP ENLARGEMENT' },
                 { shortname: 'A8.2', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR REFLECTED CEILING PLAN' }
             ]},
-            { category: 'ARCHITECTURAL', subcategory: 'FF&E', sheets: [
+            { category: 'ARCHITECTURAL', subcategory: 'FF&E', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
                 { shortname: 'A9.1', name: 'FIRST (1ST) FLOOR FF&E CORE ENLARGEMENT', schedule: '<strong>FF&E Schedule:</strong> Lists all loose furniture, decorative fixtures, and equipment by item number, description, manufacturer, model, and quantity.' },
                 { shortname: 'A9.2', name: 'FIRST (1ST) FLOOR FF&E PLAN ENLARGEMENT' },
                 { shortname: 'A9.3', name: 'MISC FF&E ENLARGEMENTS' }
             ]},
 
-            { category: 'STRUCTURAL', subcategory: 'OVERALL', sheets: [
+            { category: 'STRUCTURAL', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf', sheets: [
                 { shortname: 'S1.0', name: 'STRUCTURAL NOTES, SCHEDULES & DETAILS', schedule: '<strong>General Structural Notes:</strong> Often contains tabular data for material properties, design loads, or construction requirements.<br><strong>Foundation Schedule:</strong> Details various foundation elements with dimensions, rebar, and concrete strength.<br><strong>Column Schedule:</strong> Lists vertical structural members with sizes, materials, and reinforcement.<br><strong>Beam Schedule:</strong> Lists horizontal structural members with sizes, materials, and reinforcement.<br><strong>Steel Member Schedule:</strong> Lists steel shapes and their properties.<br><strong>Concrete Schedule:</strong> Specifications for different concrete mixes used on the project.' },
                 { shortname: 'S1.1', name: 'FOUNDATION PLAN' }, { shortname: 'S1.2', name: 'SECOND (2ND) FLOOR FRAMING PLAN' },
                 { shortname: 'S1.3', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR FRAMING PLAN' }, { shortname: 'S1.4', name: 'ROOF FRAMING PLAN' }
             ]},
-            { category: 'STRUCTURAL', subcategory: 'FOUNDATION', sheets: [{ shortname: 'S2.1', name: 'FOUNDATION DETAILS' }] },
-            { category: 'STRUCTURAL', subcategory: 'STEEL ELEVATIONS', sheets: [
+            { category: 'STRUCTURAL', subcategory: 'FOUNDATION', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf', sheets: [{ shortname: 'S2.1', name: 'FOUNDATION DETAILS' }] },
+            { category: 'STRUCTURAL', subcategory: 'STEEL ELEVATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf', sheets: [
                 { shortname: 'S3.1', name: 'STEEL ELEVATIONS DETAILS' }, { shortname: 'S3.2', name: 'STEEL ELEVATIONS & DETAILS' }
             ]},
-            { category: 'STRUCTURAL', subcategory: 'SHEAR WALL, FRAMING & DIAPHRAGM', sheets: [
+            { category: 'STRUCTURAL', subcategory: 'SHEAR WALL, FRAMING & DIAPHRAGM', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.24.pdf', sheets: [
                 { shortname: 'S4.1', name: 'SHEAR WALL & FRAMING DETAILS' }, { shortname: 'S4.2', name: 'SHEAR WALL & DIAPHRAGM PETAILS' }
             ]},
             
-            { category: 'PLUMBING', subcategory: 'OVERALL', sheets: [
+            { category: 'PLUMBING', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [
                 { shortname: 'P1.0', name: 'PLUMBING SCHEDULE DETAILS', schedule: '<strong>Plumbing Fixture Schedule:</strong> Lists all plumbing fixtures with tag, type, manufacturer, model, and remarks.<br><strong>Plumbing Equipment Schedule:</strong> Details water heaters, pumps, water treatment units, etc.<br><strong>Drainage Structure Schedule:</strong> Specific details for interior floor drains, cleanouts, etc.' },
                 { shortname: 'P1.1a', name: 'FIRST (1ST) FLOOR BELOW SLAB PLUMBING PLAN' }, { shortname: 'P1.1b', name: 'FIRST (1ST) FLOOR ABOVE SLAB PLUMBING PLAN' },
                 { shortname: 'P1.2', name: 'SECOND (2ND) FLOOR PLUMBING PLAN' }, { shortname: 'P1.3', name: 'THIRD (3RD) FLOOR PLUMBING PLAN' },
                 { shortname: 'P1.4', name: 'FOURTH (4TH) FLOOR PLUMBING PLAN' }, { shortname: 'P1.5', name: 'ROOF DRAINAGE PLAN' }
             ]},
-            { category: 'PLUMBING', subcategory: 'ISOMETRIC', sheets: [{ shortname: 'P2.1', name: 'ISOMETRIC PLAN' }] },
-            { category: 'PLUMBING', subcategory: 'WATER DISTRIBUTION', sheets: [
+            { category: 'PLUMBING', subcategory: 'ISOMETRIC', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [{ shortname: 'P2.1', name: 'ISOMETRIC PLAN' }] },
+            { category: 'PLUMBING', subcategory: 'WATER DISTRIBUTION', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [
                 { shortname: 'P3.1', name: 'FIRST (1ST) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.2', name: 'SECOND (2ND) FLOOR WATER DISTRIBUTION PLAN' },
                 { shortname: 'P3.3', name: 'THIRD (3RD) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.4', name: 'FOURTH (4TH) FLOOR WATER DISTRIBUTION PLAN' }
             ]},
-            { category: 'PLUMBING', subcategory: 'GAS, STORM, DRAINAGE PLAN', sheets: [
+            { category: 'PLUMBING', subcategory: 'GAS, STORM, DRAINAGE PLAN', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [
                 { shortname: 'P4.1', name: 'FIRST (1ST) FLOOR GAS, STORM, DRAINAGE PLAN', schedule: '<strong>Gas Appliance Schedule:</strong> Lists gas-fired equipment (e.g., boilers, water heaters) with BTU ratings.' }
             ]},
             
-            { category: 'MECHANICAL', subcategory: 'OVERALL', sheets: [
+            { category: 'MECHANICAL', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_05_Mechanical.pdf', sheets: [
                 { shortname: 'M1.0', name: 'MECHANICAL SCHEDULE DETAILS', schedule: '<strong>Mechanical Equipment Schedule:</strong> Lists HVAC units (RTUs, AHUs, split systems, exhaust fans) with capacity, airflow, electrical data, and other specifics.<br><strong>Air Device Schedule:</strong> Details grilles, registers, and diffusers with type, size, airflow, and location.<br><strong>Fan Schedule:</strong> Specific details for various fans.<br><strong>Coil Schedule:</strong> Details heating and cooling coils within HVAC systems.' },
                 { shortname: 'M1.1', name: 'FIRST (1ST) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.2', name: 'SECOND (2ND) FLOOR MECHANICAL PLAN' },
                 { shortname: 'M1.3', name: 'THIRD (3RD) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.4', name: 'FOURTH (4TH) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.5', name: 'ROOF MECHANICAL PLAN' }
             ]},
-            { category: 'MECHANICAL', subcategory: 'ENLARGEMENT', sheets: [{ shortname: 'M2.1', name: 'CORE MECHANICAL ENLARGEMENT' }] },
+            { category: 'MECHANICAL', subcategory: 'ENLARGEMENT', pdf: 'Drawings/Fairfield_Pendleton_IN_05_Mechanical.pdf', sheets: [{ shortname: 'M2.1', name: 'CORE MECHANICAL ENLARGEMENT' }] },
 
-            { category: 'ELECTRICAL', subcategory: 'OVERALL', sheets: [
+            { category: 'ELECTRICAL', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
                 { shortname: 'E1.0', name: 'SITE LIGHTING PLAN', schedule: '<strong>Site Lighting Fixture Schedule:</strong> A schedule specifically for exterior lighting fixtures.' },
                 { shortname: 'E1.0a', name: 'SITE PHOTOMETRIC PLAN' }, { shortname: 'E1.0b', name: 'SITE PLAN DETAILS' },
                 { shortname: 'E1.1', name: 'FIRST (1ST) FLOOR ELECTRICAL PLAN' }, { shortname: 'E1.2', name: 'SECOND (2ND) & THIRD (3RD) FLOOR ELECTRICAL PLAN' },
                 { shortname: 'E1.3', name: 'FOURTH (4TH) FLOOR & ROOF ELECTRICAL PLAN' }
             ]},
-            { category: 'ELECTRICAL', subcategory: 'ENLARGEMENT', sheets: [
+            { category: 'ELECTRICAL', subcategory: 'ENLARGEMENT', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
                 { shortname: 'E2.1', name: 'CORE ENLARGEMENT POWER PLAN' }, { shortname: 'E2.2', name: 'CORE ENLARGEMENT LIGHT PLAN' },
                 { shortname: 'E2.3', name: 'POOL/FITNESS ENLARGEMENT POWER PLAN' }, { shortname: 'E2.4', name: 'POOL/FITNESS ENLARGEMENT LIGHT PLAN' },
                 { shortname: 'E2.5', name: 'LAUNDRY ENLARGEMENT POWER/LIGHT PLAN' }
             ]},
-            { category: 'ELECTRICAL', subcategory: 'PANEL SCHEDULES', sheets: [
+            { category: 'ELECTRICAL', subcategory: 'PANEL SCHEDULES', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
                 { shortname: 'E3.1', name: 'PANEL SCHEDULES', schedule: '<strong>Panel Schedules:</strong> Detailed tables for electrical panels, including circuit numbers, descriptions, breaker sizes, and connected loads.' },
                 { shortname: 'E3.2', name: 'PANEL SCHEDULES' }
             ]},
-            { category: 'ELECTRICAL', subcategory: 'SINGLE LINE', sheets: [{ shortname: 'E4.1', name: 'ELECTRICAL SINGLE LINE DIAGRAM' }] },
-            { category: 'ELECTRICAL', subcategory: 'LIGHT FIXTURES, DIAGRAMS & LEGENDS', sheets: [
+            { category: 'ELECTRICAL', subcategory: 'SINGLE LINE', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [{ shortname: 'E4.1', name: 'ELECTRICAL SINGLE LINE DIAGRAM' }] },
+            { category: 'ELECTRICAL', subcategory: 'LIGHT FIXTURES, DIAGRAMS & LEGENDS', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
                 { shortname: 'E5.1', name: 'LIGHT FIXTURE SCHEDULE', schedule: '<strong>Light Fixture Schedule:</strong> Lists interior and exterior light fixtures by type, lamp, wattage, voltage, mounting, and remarks.' },
                 { shortname: 'E5.2', name: 'ELECTRICAL DIAGRAMS & DETAILS' },
                 { shortname: 'E5.3', name: 'ELECTRICAL LEGENDS & NOTES', schedule: '<strong>Electrical Legend Table:</strong> Defines symbols used on the drawings.<br><strong>Equipment Connection Schedule:</strong> Lists electrical equipment requiring power connections, showing associated circuits and breakers.<br><strong>Data/Communications Schedule:</strong> If applicable, details network drops, telephone outlets and other low-voltage connections.' }
             ]},
-            { category: 'SPECIFICATIONS', subcategory: 'SPECIFICATIONS', sheets: [{ shortname: 'SC-1', name: 'SPECIFICATIONS' }] }
+            { category: 'SPECIFICATIONS', subcategory: 'SPECIFICATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_07_Specifications.pdf', sheets: [{ shortname: 'SC-1', name: 'SPECIFICATIONS' }] }
         ];
 
-        // Map categories to their respective PDF file names
-        const categoryPdfMap = {
-            'CIVIL': 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf',
-            'ARCHITECTURAL': 'Drawings/Fairfield_Pendleton_IN_02_Architectural.pdf',
-            'STRUCTURAL': 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf',
-            'PLUMBING': 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf',
-            'MECHANICAL': 'Drawings/Fairfield_Pendleton_IN_05_Mechanical.pdf',
-            'ELECTRICAL': 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf',
-            'SPECIFICATIONS': 'Drawings/Fairfield_Pendleton_IN_07_Specifications.pdf',
-        };
+        // This function is no longer used for creating unique PDF filenames based on sheet names
+        // It now helps derive the base PDF filename for each subcategory.
+        function createFileName(category, subcategory, shortname, name) {
+            // This function is implicitly replaced by the 'pdf' property in drawingData.
+            // It remains as a placeholder, but its return value is not directly used for links here.
+            return ''; 
+        }
 
         function buildDrawingIndex() {
             const container = document.getElementById('drawing-container');
             container.innerHTML = '';
             
-            const groupedData = drawingData.reduce((acc, item) => {
-                acc[item.category] = acc[item.category] || [];
-                acc[item.category].push(item);
-                return acc;
-            }, {});
+            // Group data by category first, maintaining order
+            const groupedData = {};
+            drawingData.forEach(item => {
+                if (!groupedData[item.category]) {
+                    groupedData[item.category] = [];
+                }
+                groupedData[item.category].push(item);
+            });
 
+            // Iterate through each main category
             for (const category in groupedData) {
                 const categoryId = category.replace(/\s+/g, '-').toLowerCase();
                 
@@ -230,10 +232,13 @@
                 sectionHeader.className = 'section-header flex justify-between items-center p-4 cursor-pointer hover:bg-gray-700';
                 
                 let categoryTitle = category;
+                // Add sheet type suffix to main categories
                 if (category === 'CIVIL') {
                     categoryTitle += ' (C-Sheets)';
                 } else if (category === 'ARCHITECTURAL') {
                     categoryTitle += ' (A-Sheets)';
+                } else if (category === 'ARCHITECTURAL HIGH LEVEL') { // New category
+                    categoryTitle += ' (A-Sheets)'; // Assuming it falls under A-Sheets conceptually
                 } else if (category === 'STRUCTURAL') {
                     categoryTitle += ' (S-Sheets)';
                 } else if (category === 'PLUMBING') {
@@ -257,34 +262,29 @@
                 sectionContent.id = `content-${categoryId}`;
                 sectionContent.className = 'section-content px-4 pb-4';
 
-                let currentPageCounter = 1; // Initialize page counter for each category
+                // Map to keep track of current page number for each PDF file path
+                const currentPageCounters = {};
 
                 groupedData[category].forEach((subcat, subcatIndex) => {
                     const subgroupSection = document.createElement('div');
                     subgroupSection.className = 'subgroup-section mt-4 pt-4 border-t border-gray-700';
                     
-                    // The "(Compilation)" text is now permanently removed from subgroup titles
-                    const compilationText = '';
-                    
-                    // Get the category-specific PDF for the subgroup link
-                    const categoryPdf = categoryPdfMap[category];
-                    
-                    // Determine the page number for the subgroup link based on cumulative sheets
-                    let subgroupStartPage = currentPageCounter;
-                    if (subcatIndex === 0) {
-                        subgroupStartPage = 1; // First subgroup of a category starts at page 1
-                    } else {
-                        // For subsequent subgroups, the starting page is the page number of the
-                        // first sheet of the current subgroup in the original page sequence.
-                        // This logic relies on the drawingData order reflecting the page order.
-                        // Since we are iterating through ordered subcategories,
-                        // currentPageCounter will correctly hold the starting page for the current subgroup.
-                    }
+                    // Get the PDF path for this specific subcategory
+                    const subcategoryPdfPath = subcat.pdf;
 
-                    const compilationLink = categoryPdf ? `${categoryPdf}#page=${subgroupStartPage}` : '#';
+                    // Initialize or get the current page counter for this PDF file
+                    if (!currentPageCounters[subcategoryPdfPath]) {
+                        currentPageCounters[subcategoryPdfPath] = 1;
+                    }
+                    
+                    // The starting page for the current subgroup in its specific PDF
+                    const subgroupStartPage = currentPageCounters[subcategoryPdfPath];
+                    
+                    // Construct the link for the subgroup title
+                    const subgroupLink = subcategoryPdfPath ? `${subcategoryPdfPath}#page=${subgroupStartPage}` : '#';
 
                     subgroupSection.innerHTML = `<h4 class="subgroup-title text-lg font-semibold text-blue-300 mb-2">
-                                                    <a href="${compilationLink}" target="_blank" class="hover:underline">${subcat.subcategory}${compilationText}</a>
+                                                    <a href="${subgroupLink}" target="_blank" class="hover:underline">${subcat.subcategory}</a>
                                                  </h4>`;
                     
                     const drawingList = document.createElement('div');
@@ -295,8 +295,8 @@
                         drawingItemWrapper.className = 'drawing-item-wrapper';
 
                         const drawingItem = document.createElement('div');
-                        // Individual sheet items no longer have links
-                        drawingItem.className = 'drawing-item text-gray-200'; // Set text color for non-linked items
+                        // Individual sheet items are now plain text, no links
+                        drawingItem.className = 'drawing-item text-gray-200';
                         drawingItem.innerHTML = `<strong class="font-mono bg-gray-700 px-2 py-1 rounded-md text-sm text-gray-100">${sheet.shortname}</strong>: ${sheet.name}`;
                         drawingItemWrapper.appendChild(drawingItem);
 
@@ -307,7 +307,9 @@
                             drawingItemWrapper.appendChild(scheduleInfo);
                         }
                         drawingList.appendChild(drawingItemWrapper);
-                        currentPageCounter++; // Increment for the next sheet
+
+                        // Increment the page counter for the current PDF
+                        currentPageCounters[subcategoryPdfPath]++;
                     });
                     
                     subgroupSection.appendChild(drawingList);
@@ -351,8 +353,7 @@
                 });
 
                 const content = section.querySelector('.section-content');
-                const header = section.querySelector('.section-header');
-                const svg = header.querySelector('svg');
+                const header = section.querySelector('svg');
 
                 if (filter === "") {
                     section.style.display = "";
