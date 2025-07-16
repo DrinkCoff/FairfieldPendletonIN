@@ -5,25 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fairfield Inn & Suites - Drawing Index</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chosen Palette: Dark Blues & Grays -->
-    <!-- Application Structure Plan: A single-page application using a collapsible accordion structure. The top level consists of major disciplines (Civil, Architectural, etc.). Each discipline expands to show subgroups (e.g., Floor Plan, Room, Wall), which contain the individual drawing sheets. A global search bar filters all content in real-time. This hierarchical structure is intuitive for construction documents and the search function provides immediate access, maximizing usability for users trying to locate specific information quickly. -->
-    <!-- Visualization & Content Choices: The primary content is a hierarchical list of drawings. Goal: Organize/Inform. Method: Styled HTML divs creating nested, collapsible lists. Interaction: A live text search filters drawings and schedule descriptions. Section headers are clickable to expand/collapse. Justification: This is the most direct and effective way to present a large, categorized index. No charts are needed as the data is purely textual and organizational. Method: Vanilla JS for interactions, Tailwind CSS for styling. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
         .section-content {
             display: none;
+            overflow: hidden; /* Ensures transition works correctly */
+            transition: max-height 0.5s ease-out; /* Smooth transition for expand/collapse */
+            max-height: 0; /* Hidden state */
         }
         .section-content.active {
-            display: block;
+            max-height: 2000px; /* Large enough value to show all content */
+            display: block; /* Important for search filter to work on hidden sections */
+        }
+        .section-header svg {
+            transition: transform 0.3s ease-out;
+        }
+        .section-header.active svg {
+            transform: rotate(180deg);
         }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100">
 
-    <div class="container mx-auto p-4 md:p-8 max-w-5xl bg-gray-800 rounded-lg shadow-xl">
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl bg-gray-800 rounded-lg shadow-xl mt-8 mb-8">
         <header class="mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-50">Fairfield Inn & Suites, Pendleton, IN</h1>
             <p class="text-md text-gray-300 mt-1">Interactive Project Drawing Index</p>
@@ -41,7 +48,7 @@
                     <p><strong>Construction Manager:</strong> NorthCo</p>
                 </div>
             </div>
-             <div class="bg-gray-700 p-6 rounded-lg shadow-inner">
+            <div class="bg-gray-700 p-6 rounded-lg shadow-inner">
                 <h3 class="font-bold text-lg text-gray-50 mb-3 border-b border-gray-600 pb-2">Location Information</h3>
                 <div class="space-y-2 text-sm text-gray-200">
                     <p><strong>Address:</strong> 0 S Heritage Way, Pendleton, IN 46064</p>
@@ -55,261 +62,294 @@
         </div>
 
         <main id="drawing-container" class="space-y-4">
-            <!-- Drawing data will be injected here by JavaScript -->
-        </main>
+            </main>
     </div>
 
     <script>
-        const drawingData = [
-            { category: 'CIVIL', subcategory: 'COVER SHEET', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C000', name: 'COVER SHEET' }] },
-            { category: 'CIVIL', subcategory: 'EXISTING SITE CONDITIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C100', name: 'EXISTING SITE CONDITIONS' }] },
-            { category: 'CIVIL', subcategory: 'SITE PLAN', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C200', name: 'SITE PLAN' }] },
-            { category: 'CIVIL', subcategory: 'GRADING & EROSION', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [
-                { shortname: 'C300', name: 'GRADING PLAN', schedule: '<strong>Erosion Control Device Schedule:</strong> Details various erosion control measures (e.g., silt fence, inlet protection) and their specifications.' },
-                { shortname: 'C301', name: 'EROSION CONTROL PLAN' },
-                { shortname: 'C302', name: 'EROSION CONTROL / SWPPP NOTES' },
-                { shortname: 'C303', name: 'EROSION CONTROL DETAILS' }
-            ]},
-            { category: 'CIVIL', subcategory: 'UTILITY', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [
-                { shortname: 'C400', name: 'UTILITY PLAN', schedule: '<strong>Storm Sewer Structure Schedule:</strong> Lists catch basins, manholes, and other storm drainage elements with their types, sizes, and invert elevations.<br><strong>Sanitary Sewer Structure Schedule:</strong> Lists manholes and other sanitary sewer elements with their types and invert elevations.<br><strong>Utility Connection Schedule:</strong> Details connections to municipal utilities.' }
-            ]},
-            { category: 'CIVIL', subcategory: 'CONSTRUCTION', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'C500', name: 'CONSTRUCTION DETAILS' }] },
-            { category: 'CIVIL', subcategory: 'LANDSCAPE', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [
-                { shortname: 'C600', name: 'LANDSCAPE PLAN', schedule: '<strong>Planting Schedule:</strong> Lists all trees, shrubs, and groundcovers by quantity, botanical and common names, size, and planting notes.<br><strong>Site Furnishing Schedule:</strong> Details benches, bike racks, trash receptacles, etc.' }
-            ]},
-            { category: 'CIVIL', subcategory: 'LIGHTING PHOTOMETRIC', pdf: 'Drawings/Fairfield_Pendleton_IN_01_Civil.pdf', sheets: [{ shortname: 'E101', name: 'LIGHTING PHOTOMETRIC' }] },
-            
-            // ARCHITECTURAL category, with updated PDF references and re-integrated HIGH LEVEL
-            { category: 'ARCHITECTURAL', subcategory: 'HIGH LEVEL', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Highlevel.pdf', sheets: [
-                { shortname: 'T-1', name: 'TITLE SHEET' },
-                { shortname: 'T-2', name: 'OCCUPANCY FIRE RATING PLANS & DETAILS' },
-                { shortname: 'T-3', name: 'STRUCTURAL FIRE RATING PLANS & DETAILS' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'FLOOR PLAN', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_FloorPlanElevations.pdf', sheets: [
-                { shortname: 'A1.1', name: 'FIRST (1ST) FLOOR PLAN', schedule: '<strong>Room Mix Matrix:</strong> Details room types, quantities, and areas.<br><strong>Room Numbering/Naming Schedule:</strong> A simple list of room numbers and their corresponding names.' },
-                { shortname: 'A1.2', name: 'SECOND (2ND) FLOOR PLAN' },
-                { shortname: 'A1.3', name: 'THIRD (3RD) FLOOR PLAN' },
-                { shortname: 'A1.4', name: 'FOURTH (4TH) FLOOR PLAN' },
-                { shortname: 'A1.5', name: 'ROOF PLAN' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'EXTERIOR ELEVATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_FloorPlanElevations.pdf', sheets: [{ shortname: 'A2.1', name: 'EXTERIOR ELEVATIONS' }] },
-            { category: 'ARCHITECTURAL', subcategory: 'ROOM', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A3.0a', name: 'GUESTROOM DETAILS & NOTES' },
-                { shortname: 'A3.0b', name: 'GUESTROOM DETAILS & NOTES' },
-                { shortname: 'A3.0c', name: 'GUESTROOM ENLARGED CASEWORK & DETAILS', schedule: '<strong>Casework Schedule:</strong> Lists custom millwork and built-in elements with dimensions, materials, and finishes.' },
-                { shortname: 'A3.1', name: 'KING ENLARGEMENT' },
-                { shortname: 'A3.2', name: 'ACCESSIBLE KING ENLARGEMENT' },
-                { shortname: 'A3.3', name: 'KING SUITE ENLARGEMENT' },
-                { shortname: 'A3.4', name: 'ACCESSIBLE KING SUITE ENLARGEMENT' },
-                { shortname: 'A3.5', name: 'QUEEN QUEEN ENLARGEMENT' },
-                { shortname: 'A3.6', name: 'ACCESSIBLE Q.Q. TUB & ROLL-IN ENLARGEMENT' },
-                { shortname: 'A3.7', name: 'QUEEN QUEEN SUITE ENLARGEMENT' },
-                { shortname: 'A3.8', name: 'ACCESSIBLE QUEEN QUEEN SUITE ENLARGEMENT' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'ENLARGEMENT', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A4.1', name: 'FIRST (1ST) FLOOR CORE PLAN ENLARGEMENT' },
-                { shortname: 'A4.2', name: 'FIRST (1ST) FLOOR PLAN ENLARGEMENT' },
-                { shortname: 'A4.3', name: 'MISC PLAN ENLARGEMENTS' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'WALL', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A5.1', name: 'WALL TYPES & DETAILS' }, { shortname: 'A5.2', name: 'ASSEMBLY PENETRATIONS' },
-                { shortname: 'A5.3', name: 'WALL SECTIONS & DETAILS' }, { shortname: 'A5.4', name: 'STAIR PLANS & DETAILS' },
-                { shortname: 'A5.5', name: 'STAIR SECTION & DETAILS' }, { shortname: 'A5.5b', name: 'STAIR SECTION & DETAILS' },
-                { shortname: 'A5.6', name: 'ELEVATOR SECTION & DETAILS' }, { shortname: 'A5.7', name: 'LINEN CHUTE SECTION & DETAILS' },
-                { shortname: 'A5.8', name: 'CANOPY SECTIONS DETAILS' }, { shortname: 'A5.9', name: 'DUMPSTER SECTIONS & DETAILS' },
-                { shortname: 'A5.10', name: 'MISC. SECTIONS & DETAILS' }, { shortname: 'A5.11', name: 'ENLARGED & MISC. DETAILS' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'INTERIOR ELEVATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A6.1', name: 'INTERIOR ELEVATIONS, DETAILS SECTIONS' }, { shortname: 'A6.2', name: 'BREAKFAST DETAILS & ELEVATIONS' },
-                { shortname: 'A6.3', name: 'EXERCISE PUBLIC REST ROOM ELEVATIONS' }, { shortname: 'A6.4', name: 'CONNECT & PRINT DETAILS ELEVATIONS' },
-                { shortname: 'A6.5', name: 'LOBBY RETAIL DETAILS & ELEVATIONS' }, { shortname: 'A6.6', name: 'REGISTRATION DETAILS & ELEVATIONS' },
-                { shortname: 'A6.7', name: 'REGISTRATION DETAILS & ELEVATIONS' }, { shortname: 'A6.8', name: 'FOOD SERVICE EQUIPMENT INT. ELEV. & SECTIONS' },
-                { shortname: 'A6.9', name: 'INTERIOR ELEVATIONS & DETAILS' }, { shortname: 'A6.10', name: 'HEARTH DETAILS & POOL INT. ELEVATIONS' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'DOOR & WINDOW', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A7.1', name: 'DOOR SCHEDULE & DETAILS', schedule: '<strong>Door Schedule:</strong> Comprehensive list of all doors, including ID, size, type, material, fire rating, hardware set, and remarks.' },
-                { shortname: 'A7.2', name: 'WINDOW DETAILS & ROOM FINISH SCHEDULE', schedule: '<strong>Window Schedule:</strong> Details all windows with ID, size, type, material, glazing, and remarks.<br><strong>Room Finish Schedule:</strong> Specifies floor, base, wall, and ceiling finishes for each room.' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'CEILING', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A8.1', name: 'FIRST (1ST) & SECOND (2ND) FLOOR REFLECTED CEILING PLAN' },
-                { shortname: 'A8.1a', name: 'FIRST (1ST) FLOOR CORE RCP ENLARGEMENT' }, { shortname: 'A8.1b', name: 'FIRST (1ST) FLOOR RCP ENLARGEMENT' },
-                { shortname: 'A8.2', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR REFLECTED CEILING PLAN' }
-            ]},
-            { category: 'ARCHITECTURAL', subcategory: 'FF&E', pdf: 'Drawings/Fairfield_Pendleton_IN_02_Architectural_Rest.pdf', sheets: [
-                { shortname: 'A9.1', name: 'FIRST (1ST) FLOOR FF&E CORE ENLARGEMENT', schedule: '<strong>FF&E Schedule:</strong> Lists all loose furniture, decorative fixtures, and equipment by item number, description, manufacturer, model, and quantity.' },
-                { shortname: 'A9.2', name: 'FIRST (1ST) FLOOR FF&E PLAN ENLARGEMENT' },
-                { shortname: 'A9.3', name: 'MISC FF&E ENLARGEMENTS' }
-            ]},
-
-            { category: 'STRUCTURAL', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf', sheets: [
-                { shortname: 'S1.0', name: 'STRUCTURAL NOTES, SCHEDULES & DETAILS', schedule: '<strong>General Structural Notes:</strong> Often contains tabular data for material properties, design loads, or construction requirements.<br><strong>Foundation Schedule:</strong> Details various foundation elements with dimensions, rebar, and concrete strength.<br><strong>Column Schedule:</strong> Lists vertical structural members with sizes, materials, and reinforcement.<br><strong>Beam Schedule:</strong> Lists horizontal structural members with sizes, materials, and reinforcement.<br><strong>Steel Member Schedule:</strong> Lists steel shapes and their properties.<br><strong>Concrete Schedule:</strong> Specifications for different concrete mixes used on the project.' },
-                { shortname: 'S1.1', name: 'FOUNDATION PLAN' }, { shortname: 'S1.2', name: 'SECOND (2ND) FLOOR FRAMING PLAN' },
-                { shortname: 'S1.3', name: 'THIRD (3RD) & FOURTH (4TH) FLOOR FRAMING PLAN' }, { shortname: 'S1.4', name: 'ROOF FRAMING PLAN' }
-            ]},
-            { category: 'STRUCTURAL', subcategory: 'FOUNDATION', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf', sheets: [{ shortname: 'S2.1', name: 'FOUNDATION DETAILS' }] },
-            { category: 'STRUCTURAL', subcategory: 'STEEL ELEVATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.pdf', sheets: [
-                { shortname: 'S3.1', name: 'STEEL ELEVATIONS DETAILS' }, { shortname: 'S3.2', name: 'STEEL ELEVATIONS & DETAILS' }
-            ]},
-            { category: 'STRUCTURAL', subcategory: 'SHEAR WALL, FRAMING & DIAPHRAGM', pdf: 'Drawings/Fairfield_Pendleton_IN_03_Structural.24.pdf', sheets: [
-                { shortname: 'S4.1', name: 'SHEAR WALL & FRAMING DETAILS' }, { shortname: 'S4.2', name: 'SHEAR WALL & DIAPHRAGM PETAILS' }
-            ]},
-            
-            { category: 'PLUMBING', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [
-                { shortname: 'P1.0', name: 'PLUMBING SCHEDULE DETAILS', schedule: '<strong>Plumbing Fixture Schedule:</strong> Lists all plumbing fixtures with tag, type, manufacturer, model, and remarks.<br><strong>Plumbing Equipment Schedule:</strong> Details water heaters, pumps, water treatment units, etc.<br><strong>Drainage Structure Schedule:</strong> Specific details for interior floor drains, cleanouts, etc.' },
-                { shortname: 'P1.1a', name: 'FIRST (1ST) FLOOR BELOW SLAB PLUMBING PLAN' }, { shortname: 'P1.1b', name: 'FIRST (1ST) FLOOR ABOVE SLAB PLUMBING PLAN' },
-                { shortname: 'P1.2', name: 'SECOND (2ND) FLOOR PLUMBING PLAN' }, { shortname: 'P1.3', name: 'THIRD (3RD) FLOOR PLUMBING PLAN' },
-                { shortname: 'P1.4', name: 'FOURTH (4TH) FLOOR PLUMBING PLAN' }, { shortname: 'P1.5', name: 'ROOF DRAINAGE PLAN' }
-            ]},
-            { category: 'PLUMBING', subcategory: 'ISOMETRIC', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [{ shortname: 'P2.1', name: 'ISOMETRIC PLAN' }] },
-            { category: 'PLUMBING', subcategory: 'WATER DISTRIBUTION', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [
-                { shortname: 'P3.1', name: 'FIRST (1ST) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.2', name: 'SECOND (2ND) FLOOR WATER DISTRIBUTION PLAN' },
-                { shortname: 'P3.3', name: 'THIRD (3RD) FLOOR WATER DISTRIBUTION PLAN' }, { shortname: 'P3.4', name: 'FOURTH (4TH) FLOOR WATER DISTRIBUTION PLAN' }
-            ]},
-            { category: 'PLUMBING', subcategory: 'GAS, STORM, DRAINAGE PLAN', pdf: 'Drawings/Fairfield_Pendleton_IN_04_Plumbing.pdf', sheets: [
-                { shortname: 'P4.1', name: 'FIRST (1ST) FLOOR GAS, STORM, DRAINAGE PLAN', schedule: '<strong>Gas Appliance Schedule:</strong> Lists gas-fired equipment (e.g., boilers, water heaters) with BTU ratings.' }
-            ]},
-            
-            { category: 'MECHANICAL', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_05_Mechanical.pdf', sheets: [
-                { shortname: 'M1.0', name: 'MECHANICAL SCHEDULE DETAILS', schedule: '<strong>Mechanical Equipment Schedule:</strong> Lists HVAC units (RTUs, AHUs, split systems, exhaust fans) with capacity, airflow, electrical data, and other specifics.<br><strong>Air Device Schedule:</strong> Details grilles, registers, and diffusers with type, size, airflow, and location.<br><strong>Fan Schedule:</strong> Specific details for various fans.<br><strong>Coil Schedule:</strong> Details heating and cooling coils within HVAC systems.' },
-                { shortname: 'M1.1', name: 'FIRST (1ST) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.2', name: 'SECOND (2ND) FLOOR MECHANICAL PLAN' },
-                { shortname: 'M1.3', name: 'THIRD (3RD) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.4', name: 'FOURTH (4TH) FLOOR MECHANICAL PLAN' }, { shortname: 'M1.5', name: 'ROOF MECHANICAL PLAN' }
-            ]},
-            { category: 'MECHANICAL', subcategory: 'ENLARGEMENT', pdf: 'Drawings/Fairfield_Pendleton_IN_05_Mechanical.pdf', sheets: [{ shortname: 'M2.1', name: 'CORE MECHANICAL ENLARGEMENT' }] },
-
-            { category: 'ELECTRICAL', subcategory: 'OVERALL', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
-                { shortname: 'E1.0', name: 'SITE LIGHTING PLAN', schedule: '<strong>Site Lighting Fixture Schedule:</strong> A schedule specifically for exterior lighting fixtures.' },
-                { shortname: 'E1.0a', name: 'SITE PHOTOMETRIC PLAN' }, { shortname: 'E1.0b', name: 'SITE PLAN DETAILS' },
-                { shortname: 'E1.1', name: 'FIRST (1ST) FLOOR ELECTRICAL PLAN' }, { shortname: 'E1.2', name: 'SECOND (2ND) & THIRD (3RD) FLOOR ELECTRICAL PLAN' },
-                { shortname: 'E1.3', name: 'FOURTH (4TH) FLOOR & ROOF ELECTRICAL PLAN' }
-            ]},
-            { category: 'ELECTRICAL', subcategory: 'ENLARGEMENT', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
-                { shortname: 'E2.1', name: 'CORE ENLARGEMENT POWER PLAN' }, { shortname: 'E2.2', name: 'CORE ENLARGEMENT LIGHT PLAN' },
-                { shortname: 'E2.3', name: 'POOL/FITNESS ENLARGEMENT POWER PLAN' }, { shortname: 'E2.4', name: 'POOL/FITNESS ENLARGEMENT LIGHT PLAN' },
-                { shortname: 'E2.5', name: 'LAUNDRY ENLARGEMENT POWER/LIGHT PLAN' }
-            ]},
-            { category: 'ELECTRICAL', subcategory: 'PANEL SCHEDULES', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
-                { shortname: 'E3.1', name: 'PANEL SCHEDULES', schedule: '<strong>Panel Schedules:</strong> Detailed tables for electrical panels, including circuit numbers, descriptions, breaker sizes, and connected loads.' },
-                { shortname: 'E3.2', name: 'PANEL SCHEDULES' }
-            ]},
-            { category: 'ELECTRICAL', subcategory: 'SINGLE LINE', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [{ shortname: 'E4.1', name: 'ELECTRICAL SINGLE LINE DIAGRAM' }] },
-            { category: 'ELECTRICAL', subcategory: 'LIGHT FIXTURES, DIAGRAMS & LEGENDS', pdf: 'Drawings/Fairfield_Pendleton_IN_06_Electrical.pdf', sheets: [
-                { shortname: 'E5.1', name: 'LIGHT FIXTURE SCHEDULE', schedule: '<strong>Light Fixture Schedule:</strong> Lists interior and exterior light fixtures by type, lamp, wattage, voltage, mounting, and remarks.' },
-                { shortname: 'E5.2', name: 'ELECTRICAL DIAGRAMS & DETAILS' },
-                { shortname: 'E5.3', name: 'ELECTRICAL LEGENDS & NOTES', schedule: '<strong>Electrical Legend Table:</strong> Defines symbols used on the drawings.<br><strong>Equipment Connection Schedule:</strong> Lists electrical equipment requiring power connections, showing associated circuits and breakers.<br><strong>Data/Communications Schedule:</strong> If applicable, details network drops, telephone outlets and other low-voltage connections.' }
-            ]},
-            { category: 'SPECIFICATIONS', subcategory: 'SPECIFICATIONS', pdf: 'Drawings/Fairfield_Pendleton_IN_07_Specifications.pdf', sheets: [{ shortname: 'SC-1', name: 'SPECIFICATIONS' }] }
+        const rawSpreadsheetData = [
+            ["Category", "Subcategory", "Shortname", "Name", "Description", "Filename", "Pagenumber"],
+            ["CIVIL (C-Sheets)", "COVER SHEET", "C000", "COVER SHEET", "", "https://drive.google.com/file/d/1gNWQN-UAY3zv6n1RCgXe2eJvlLV1aAfY/view?usp=drive_link", "1"],
+            ["CIVIL (C-Sheets)", "SITE PLAN", "C200", "SITE PLAN", "", "https://drive.google.com/file/d/1gNWQN-UAY3zv6n1RCgXe2eJvlLV1aAfY/view?usp=drive_link", "2"],
+            ["CIVIL (C-Sheets)", "GRADING & EROSION", "C300", "GRADING PLAN", "Erosion Control Device Schedule: Details various erosion control measures (e.g., silt fence, inlet protection) and their specifications.", "https://drive.google.com/file/d/1gNWQN-UAY3zv6n1RCgXe2eJvlLV1aAfY/view?usp=drive_link", "3"],
+            ["CIVIL (C-Sheets)", "UTILITY", "C400", "UTILITY PLAN", "Storm Sewer Structure Schedule: Lists catch basins, manholes, and other storm drainage elements with their types, sizes, and invert elevations. Sanitary Sewer Structure Schedule: Lists manholes and other sanitary sewer elements with their types and invert elevations. Utility Connection Schedule: Details connections to municipal utilities.", "https://drive.google.com/file/d/1gNWQN-UAY3zv6n1RCgXe2eJvlLV1aAfY/view?usp=drive_link", "4"],
+            ["CIVIL (C-Sheets)", "LANDSCAPE", "C600", "LANDSCAPE PLAN", "Planting Schedule: Lists all trees, shrubs, and groundcovers by quantity, botanical and common names, size, and planting notes. Site Furnishing Schedule: Details benches, bike racks, trash receptacles, etc.", "https://drive.google.com/file/d/1gNWQN-UAY3zv6n1RCgXe2eJvlLV1aAfY/view?usp=drive_link", "5"],
+            ["ARCHITECTURAL (A-Sheets)", "HIGH LEVEL", "T-1", "TITLE SHEET", "", "https://drive.google.com/file/d/17f3GLMxhh9vHLiUUSmL_u7-lhJjuzv95/view?usp=drive_link", "1"],
+            ["ARCHITECTURAL (A-Sheets)", "HIGH LEVEL", "T-2", "OCCUPANCY FIRE RATING PLANS & DETAILS", "", "https://drive.google.com/file/d/17f3GLMxhh9vHLiUUSmL_u7-lhJjuzv95/view?usp=drive_link", "2"],
+            ["ARCHITECTURAL (A-Sheets)", "HIGH LEVEL", "T-3", "STRUCTURAL FIRE RATING PLANS & DETAILS", "", "https://drive.google.com/file/d/17f3GLMxhh9vHLiUUSmL_u7-lhJjuzv95/view?usp=drive_link", "3"],
+            ["ARCHITECTURAL (A-Sheets)", "FLOOR PLAN", "A1.1", "FIRST (1ST) FLOOR PLAN", "Room Mix Matrix: Details room types, quantities, and areas. Room Numbering/Naming Schedule: A simple list of room numbers and their corresponding names.", "https://drive.google.com/file/d/1u-XUWcbzeF8iQDHDEKp2BK6HLMm__oHL/view?usp=drive_link", "1"],
+            ["ARCHITECTURAL (A-Sheets)", "FLOOR PLAN", "A1.2", "SECOND (2ND) FLOOR PLAN", "", "https://drive.google.com/file/d/1u-XUWcbzeF8iQDHDEKp2BK6HLMm__oHL/view?usp=drive_link", "2"],
+            ["ARCHITECTURAL (A-Sheets)", "FLOOR PLAN", "A1.3", "THIRD (3RD) FLOOR PLAN", "", "https://drive.google.com/file/d/1u-XUWcbzeF8iQDHDEKp2BK6HLMm__oHL/view?usp=drive_link", "3"],
+            ["ARCHITECTURAL (A-Sheets)", "FLOOR PLAN", "A1.4", "FOURTH (4TH) FLOOR PLAN", "", "https://drive.google.com/file/d/1u-XUWcbzeF8iQDHDEKp2BK6HLMm__oHL/view?usp=drive_link", "4"],
+            ["ARCHITECTURAL (A-Sheets)", "FLOOR PLAN", "A1.5", "ROOF PLAN", "", "https://drive.google.com/file/d/1u-XUWcbzeF8iQDHDEKp2BK6HLMm__oHL/view?usp=drive_link", "5"],
+            ["ARCHITECTURAL (A-Sheets)", "EXTERIOR ELEVATIONS", "A2.0a", "MATERIAL DETAILS", "", "https://drive.google.com/file/d/1y22iQBEJDl3oS3Ggu4TOTvKRv2ESvIix/view?usp=drive_link", "1"],
+            ["ARCHITECTURAL (A-Sheets)", "EXTERIOR ELEVATIONS", "A2.0b", "MATERIAL DETAILS", "", "https://drive.google.com/file/d/1y22iQBEJDl3oS3Ggu4TOTvKRv2ESvIix/view?usp=drive_link", "2"],
+            ["ARCHITECTURAL (A-Sheets)", "EXTERIOR ELEVATIONS", "A2.1", "EXTERIOR ELEVATIONS", "", "https://drive.google.com/file/d/1y22iQBEJDl3oS3Ggu4TOTvKRv2ESvIix/view?usp=drive_link", "3"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.0a", "GUESTROOM DETAILS & NOTES", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "1"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.0b", "GUESTROOM DETAILS & NOTES", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "2"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.1", "KING ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "3"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.2", "ACCESSIBLE KING ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "4"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.3", "KING SUITE ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "5"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.4", "ACCESSIBLE KING SUITE ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "6"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.5", "QUEEN QUEEN ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "7"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.6", "ACCESSIBLE Q.Q. TUB & ROLL-IN ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "8"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.7", "QUEEN QUEEN SUITE ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "9"],
+            ["ARCHITECTURAL (A-Sheets)", "ROOM", "A3.8", "ACCESSIBLE QUEEN QUEEN SUITE ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "10"],
+            ["ARCHITECTURAL (A-Sheets)", "ENLARGEMENT", "A4.1", "FIRST (1ST) FLOOR CORE PLAN ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "11"],
+            ["ARCHITECTURAL (A-Sheets)", "ENLARGEMENT", "A4.2", "FIRST (1ST) FLOOR PLAN ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "12"],
+            ["ARCHITECTURAL (A-Sheets)", "ENLARGEMENT", "A4.3", "MISC PLAN ENLARGEMENTS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "13"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.1", "WALL TYPES & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "14"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.2", "ASSEMBLY PENETRATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "15"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.3", "WALL SECTIONS & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "16"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.4", "STAIR PLANS & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "17"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.5", "STAIR SECTION & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "18"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.5b", "STAIR SECTION & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "19"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.6", "ELEVATOR SECTION & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "20"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.7", "LINEN CHUTE SECTION & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "21"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.8", "CANOPY SECTIONS DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "22"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.9", "DUMPSTER SECTIONS & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "23"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.10", "MISC. SECTIONS & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "24"],
+            ["ARCHITECTURAL (A-Sheets)", "WALL", "A5.11", "ENLARGED & MISC. DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "25"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.1", "INTERIOR ELEVATIONS, DETAILS SECTIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "26"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.2", "BREAKFAST DETAILS & ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "27"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.3", "EXERCISE PUBLIC REST ROOM ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "28"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.4", "CONNECT & PRINT DETAILS ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "29"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.5", "LOBBY RETAIL DETAILS & ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "30"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.6", "REGISTRATION DETAILS & ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "31"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.7", "REGISTRATION DETAILS & ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "32"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.8", "FOOD SERVICE EQUIPMENT INT. ELEV. & SECTIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "33"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.9", "INTERIOR ELEVATIONS & DETAILS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "34"],
+            ["ARCHITECTURAL (A-Sheets)", "INTERIOR ELEVATIONS", "A6.10", "HEARTH DETAILS & POOL INT. ELEVATIONS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "35"],
+            ["ARCHITECTURAL (A-Sheets)", "DOOR & WINDOW", "A7.1", "DOOR SCHEDULE & DETAILS", "Door Schedule: Comprehensive list of all doors, including ID, size, type, material, fire rating, hardware set, and remarks.", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "36"],
+            ["ARCHITECTURAL (A-Sheets)", "DOOR & WINDOW", "A7.2", "WINDOW DETAILS & ROOM FINISH SCHEDULE", "Window Schedule: Details all windows with ID, size, type, material, glazing, and remarks. Room Finish Schedule: Specifies floor, base, wall, and ceiling finishes for each room.", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "37"],
+            ["ARCHITECTURAL (A-Sheets)", "CEILING", "A8.1", "FIRST (1ST) & SECOND (2ND) FLOOR REFLECTED CEILING PLAN", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "38"],
+            ["ARCHITECTURAL (A-Sheets)", "CEILING", "A8.1a", "FIRST (1ST) FLOOR CORE RCP ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "39"],
+            ["ARCHITECTURAL (A-Sheets)", "CEILING", "A8.1b", "FIRST (1ST) FLOOR RCP ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "40"],
+            ["ARCHITECTURAL (A-Sheets)", "CEILING", "A8.2", "THIRD (3RD) & FOURTH (4TH) FLOOR REFLECTED CEILING PLAN", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "41"],
+            ["ARCHITECTURAL (A-Sheets)", "CEILING", "A8.2a", "TYP UPPER FLOOR CORE RCP ENLARG.", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "42"],
+            ["ARCHITECTURAL (A-Sheets)", "FF&E", "A9.1", "FIRST (1ST) FLOOR FF&E CORE ENLARGEMENT", "FF&E Schedule: Lists all loose furniture, decorative fixtures, and equipment by item number, description, manufacturer, model, and quantity.", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "43"],
+            ["ARCHITECTURAL (A-Sheets)", "FF&E", "A9.2", "FIRST (1ST) FLOOR FF&E PLAN ENLARGEMENT", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "44"],
+            ["ARCHITECTURAL (A-Sheets)", "FF&E", "A9.3", "MISC FF&E ENLARGEMENTS", "", "https://drive.google.com/file/d/1v8bR_Xs6qMl7xZBvakV7FnoGrniPM8sD/view?usp=drive_link", "45"],
+            ["STRUCTURAL (S-Sheets)", "OVERALL", "S1.0", "STRUCTURAL NOTES, SCHEDULES & DETAILS", "General Structural Notes: Often contains tabular data for material properties, design loads, or construction requirements. Foundation Schedule: Details various foundation elements with dimensions, rebar, and concrete strength. Column Schedule: Lists vertical structural members with sizes, materials, and reinforcement. Beam Schedule: Lists horizontal structural members with sizes, materials, and reinforcement. Steel Member Schedule: Lists steel shapes and their properties. Concrete Schedule: Specifications for different concrete mixes used on the project.", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "1"],
+            ["STRUCTURAL (S-Sheets)", "OVERALL", "S1.1", "FOUNDATION PLAN", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "2"],
+            ["STRUCTURAL (S-Sheets)", "OVERALL", "S1.2", "SECOND (2ND) FLOOR FRAMING PLAN", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "3"],
+            ["STRUCTURAL (S-Sheets)", "OVERALL", "S1.3", "THIRD (3RD) & FOURTH (4TH) FLOOR FRAMING PLAN", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "4"],
+            ["STRUCTURAL (S-Sheets)", "OVERALL", "S1.4", "ROOF FRAMING PLAN", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "5"],
+            ["STRUCTURAL (S-Sheets)", "FOUNDATION", "S2.1", "FOUNDATION DETAILS", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "6"],
+            ["STRUCTURAL (S-Sheets)", "STEEL ELEVATIONS", "S3.1", "STEEL ELEVATIONS DETAILS", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "7"],
+            ["STRUCTURAL (S-Sheets)", "STEEL ELEVATIONS", "S3.2", "STEEL ELEVATIONS & DETAILS", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "8"],
+            ["STRUCTURAL (S-Sheets)", "SHEAR WALL, FRAMING & DIAPHRAGM", "S4.1", "SHEAR WALL & FRAMING DETAILS", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "9"],
+            ["STRUCTURAL (S-Sheets)", "SHEAR WALL, FRAMING & DIAPHRAGM", "S4.2", "SHEAR WALL & DIAPHRAGM PETAILS", "", "https://drive.google.com/file/d/1Jg0Ofn4l36Ld2JmihDemyY2WxliEOqR8/view?usp=drive_link", "10"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.0", "PLUMBING SCHEDULE DETAILS", "Plumbing Fixture Schedule: Lists all plumbing fixtures with tag, type, manufacturer, model, and remarks. Plumbing Equipment Schedule: Details water heaters, pumps, water treatment units, etc. Drainage Structure Schedule: Specific details for interior floor drains, cleanouts, etc.", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "1"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.1", "FIRST (1ST) FLOOR PLUMBING PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "2"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.1a", "FIRST (1ST) FLOOR BELOW SLAB PLUMBING PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "3"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.1b", "FIRST (1ST) FLOOR ABOVE SLAB PLUMBING PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "4"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.2", "SECOND (2ND) FLOOR PLUMBING PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "5"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.3", "THIRD (3RD) FLOOR PLUMBING PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "6"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.4", "FOURTH (4TH) FLOOR PLUMBING PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "7"],
+            ["PLUMBING (P-Sheets)", "OVERALL", "P1.5", "ROOF DRAINAGE PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "8"],
+            ["PLUMBING (P-Sheets)", "ISOMETRIC", "P2.1", "ISOMETRIC PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "9"],
+            ["PLUMBING (P-Sheets)", "WATER DISTRIBUTION", "P3.1", "FIRST (1ST) FLOOR WATER DISTRIBUTION PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "10"],
+            ["PLUMBING (P-Sheets)", "WATER DISTRIBUTION", "P3.2", "SECOND (2ND) FLOOR WATER DISTRIBUTION PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "11"],
+            ["PLUMBING (P-Sheets)", "WATER DISTRIBUTION", "P3.3", "THIRD (3RD) FLOOR WATER DISTRIBUTION PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "12"],
+            ["PLUMBING (P-Sheets)", "WATER DISTRIBUTION", "P3.4", "FOURTH (4TH) FLOOR WATER DISTRIBUTION PLAN", "", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "13"],
+            ["PLUMBING (P-Sheets)", "GAS, STORM, DRAINAGE PLAN", "P4.1", "FIRST (1ST) FLOOR GAS, STORM, DRAINAGE PLAN", "Gas Appliance Schedule: Lists gas-fired equipment (e.g., boilers, water heaters) with BTU ratings.", "https://drive.google.com/file/d/1Tmyym7YAcXdK2Y2BSA8Jsgsrfckbh574/view?usp=drive_link", "14"],
+            ["MECHANICAL (M-Sheets)", "OVERALL", "M1.0", "MECHANICAL SCHEDULE DETAILS", "Mechanical Equipment Schedule: Lists HVAC units (RTUs, AHUs, split systems, exhaust fans) with capacity, airflow, electrical data, and other specifics. Air Device Schedule: Details grilles, registers, and diffusers with type, size, airflow, and location. Fan Schedule: Specific details for various fans. Coil Schedule: Details heating and cooling coils within HVAC systems.", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "1"],
+            ["MECHANICAL (M-Sheets)", "OVERALL", "M1.1", "FIRST (1ST) FLOOR MECHANICAL PLAN", "", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "2"],
+            ["MECHANICAL (M-Sheets)", "OVERALL", "M1.2", "SECOND (2ND) FLOOR MECHANICAL PLAN", "", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "3"],
+            ["MECHANICAL (M-Sheets)", "OVERALL", "M1.3", "THIRD (3RD) FLOOR MECHANICAL PLAN", "", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "4"],
+            ["MECHANICAL (M-Sheets)", "OVERALL", "M1.4", "FOURTH (4TH) FLOOR MECHANICAL PLAN", "", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "5"],
+            ["MECHANICAL (M-Sheets)", "OVERALL", "M1.5", "ROOF MECHANICAL PLAN", "", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "6"],
+            ["MECHANICAL (M-Sheets)", "ENLARGEMENT", "M2.1", "CORE MECHANICAL ENLARGEMENT", "", "https://drive.google.com/file/d/1hWVO6bTHuXHM3zdi07SntVJTNMhTuumb/view?usp=drive_link", "7"],
+            ["ELECTRICAL (E-Sheets)", "OVERALL", "E1.0", "SITE LIGHTING PLAN", "Site Lighting Fixture Schedule: A schedule specifically for exterior lighting fixtures.", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "1"],
+            ["ELECTRICAL (E-Sheets)", "OVERALL", "E1.0a", "SITE PHOTOMETRIC PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "2"],
+            ["ELECTRICAL (E-Sheets)", "OVERALL", "E1.1", "FIRST (1ST) FLOOR ELECTRICAL PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "3"],
+            ["ELECTRICAL (E-Sheets)", "OVERALL", "E1.2", "SECOND (2ND) & THIRD (3RD) FLOOR ELECTRICAL PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "4"],
+            ["ELECTRICAL (E-Sheets)", "OVERALL", "E1.3", "FOURTH (4TH) FLOOR & ROOF ELECTRICAL PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "5"],
+            ["ELECTRICAL (E-Sheets)", "ENLARGEMENT", "E2.1", "CORE ENLARGEMENT POWER PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "6"],
+            ["ELECTRICAL (E-Sheets)", "ENLARGEMENT", "E2.2", "CORE ENLARGEMENT LIGHT PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "7"],
+            ["ELECTRICAL (E-Sheets)", "ENLARGEMENT", "E2.3", "POOL/FITNESS ENLARGEMENT POWER PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "8"],
+            ["ELECTRICAL (E-Sheets)", "ENLARGEMENT", "E2.4", "POOL/FITNESS ENLARGEMENT LIGHT PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "9"],
+            ["ELECTRICAL (E-Sheets)", "ENLARGEMENT", "E2.5", "LAUNDRY ENLARGEMENT POWER/LIGHT PLAN", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "10"],
+            ["ELECTRICAL (E-Sheets)", "PANEL SCHEDULES", "E3.1", "PANEL SCHEDULES", "Panel Schedules: Detailed tables for electrical panels, including circuit numbers, descriptions, breaker sizes, and connected loads.", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "11"],
+            ["ELECTRICAL (E-Sheets)", "PANEL SCHEDULES", "E3.2", "PANEL SCHEDULES", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "12"],
+            ["ELECTRICAL (E-Sheets)", "SINGLE LINE", "E4.1", "ELECTRICAL SINGLE LINE DIAGRAM", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "13"],
+            ["ELECTRICAL (E-Sheets)", "LIGHT FIXTURES, DIAGRAMS & LEGENDS", "E5.1", "LIGHT FIXTURE SCHEDULE", "Light Fixture Schedule: Lists interior and exterior light fixtures by type, lamp, wattage, voltage, mounting, and remarks.", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "14"],
+            ["ELECTRICAL (E-Sheets)", "LIGHT FIXTURES, DIAGRAMS & LEGENDS", "E5.2", "ELECTRICAL DIAGRAMS & DETAILS", "", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "15"],
+            ["ELECTRICAL (E-Sheets)", "LIGHT FIXTURES, DIAGRAMS & LEGENDS", "E5.3", "ELECTRICAL LEGENDS & NOTES", "Electrical Legend Table: Defines symbols used on the drawings. Equipment Connection Schedule: Lists electrical equipment requiring power connections, showing associated circuits and breakers. Data/Communications Schedule: If applicable, details network drops, telephone outlets and other low-voltage connections.", "https://drive.google.com/file/d/1Nne16n4wTB_dkNoCP9zkeU_pbSUIL9q5/view?usp=drive_link", "16"],
+            ["SPECIFICATIONS", "SPECIFICATIONS", "SC-1", "SPECIFICATIONS", "", "https://drive.google.com/file/d/1sEn9z6MNW0zOyz1Spt0ZVrDMehb8TUug/view?usp=drive_link", "1"]
         ];
 
-        // This function is no longer used for creating unique PDF filenames based on sheet names
-        // It now helps derive the base PDF filename for each subcategory.
-        function createFileName(category, subcategory, shortname, name) {
-            // This function is implicitly replaced by the 'pdf' property in drawingData.
-            // It remains as a placeholder, but its return value is not directly used for links here.
-            return ''; 
+        function parseAndGroupData(data) {
+            const headers = data[0];
+            const rows = data.slice(1);
+            
+            const grouped = {};
+            let lastCategory = '';
+            let lastSubcategory = '';
+            let currentFilename = '';
+
+            rows.forEach(row => {
+                const item = {};
+                headers.forEach((header, index) => {
+                    item[header.toLowerCase()] = row[index];
+                });
+
+                const category = item.category;
+                const subcategory = item.subcategory;
+
+                // If category or subcategory changes, reset currentFilename
+                if (category !== lastCategory || subcategory !== lastSubcategory) {
+                    currentFilename = '';
+                }
+
+                // If filename is present in the current row, update currentFilename
+                if (item.filename) {
+                    currentFilename = item.filename;
+                } else {
+                    // If filename is empty, use the last known filename for this subcategory
+                    item.filename = currentFilename;
+                }
+
+                if (!grouped[category]) {
+                    grouped[category] = {};
+                }
+                if (!grouped[category][subcategory]) {
+                    grouped[category][subcategory] = [];
+                }
+                grouped[category][subcategory].push(item);
+
+                lastCategory = category;
+                lastSubcategory = subcategory;
+            });
+            return grouped;
         }
+
+        const drawingDataGrouped = parseAndGroupData(rawSpreadsheetData);
 
         function buildDrawingIndex() {
             const container = document.getElementById('drawing-container');
             container.innerHTML = '';
             
-            // Group data by category first, maintaining order
-            const groupedData = {};
-            drawingData.forEach(item => {
-                if (!groupedData[item.category]) {
-                    groupedData[item.category] = [];
-                }
-                groupedData[item.category].push(item);
-            });
+            // Define custom order for Architectural subcategories
+            const architecturalOrder = [
+                "HIGH LEVEL",
+                "FLOOR PLAN",
+                "EXTERIOR ELEVATIONS",
+                "ROOM",
+                "ENLARGEMENT",
+                "WALL",
+                "INTERIOR ELEVATIONS",
+                "DOOR & WINDOW",
+                "CEILING",
+                "FF&E"
+            ];
 
             // Iterate through each main category
-            for (const category in groupedData) {
+            for (const category in drawingDataGrouped) {
                 const categoryId = category.replace(/\s+/g, '-').toLowerCase();
                 
                 const sectionWrapper = document.createElement('div');
                 sectionWrapper.className = 'bg-gray-800 rounded-lg shadow-sm transition-all duration-300';
                 
                 const sectionHeader = document.createElement('div');
-                sectionHeader.className = 'section-header flex justify-between items-center p-4 cursor-pointer hover:bg-gray-700';
+                sectionHeader.className = 'section-header flex justify-between items-center p-4 cursor-pointer hover:bg-gray-700 rounded-t-lg';
                 
-                let categoryTitle = category;
-                // Add sheet type suffix to main categories
-                if (category === 'CIVIL') {
-                    categoryTitle += ' (C-Sheets)';
-                } else if (category === 'ARCHITECTURAL') {
-                    categoryTitle += ' (A-Sheets)';
-                } else if (category === 'ARCHITECTURAL HIGH LEVEL') { // New category
-                    categoryTitle += ' (A-Sheets)'; // Assuming it falls under A-Sheets conceptually
-                } else if (category === 'STRUCTURAL') {
-                    categoryTitle += ' (S-Sheets)';
-                } else if (category === 'PLUMBING') {
-                    categoryTitle += ' (P-Sheets)';
-                } else if (category === 'MECHANICAL') {
-                    categoryTitle += ' (M-Sheets)';
-                } else if (category === 'ELECTRICAL') {
-                    categoryTitle += ' (E-Sheets)';
+                let categoryDisplayTitle = category;
+                // Add sheet type suffix to main categories - already in data, but kept for clarity
+                if (category.includes('(C-Sheets)')) {
+                    categoryDisplayTitle = 'CIVIL (C-Sheets)';
+                } else if (category.includes('(A-Sheets)')) {
+                    categoryDisplayTitle = 'ARCHITECTURAL (A-Sheets)';
+                } else if (category.includes('(S-Sheets)')) {
+                    categoryDisplayTitle = 'STRUCTURAL (S-Sheets)';
+                } else if (category.includes('(P-Sheets)')) {
+                    categoryDisplayTitle = 'PLUMBING (P-Sheets)';
+                } else if (category.includes('(M-Sheets)')) {
+                    categoryDisplayTitle = 'MECHANICAL (M-Sheets)';
+                } else if (category.includes('(E-Sheets)')) {
+                    categoryDisplayTitle = 'ELECTRICAL (E-Sheets)';
+                } else if (category === 'SPECIFICATIONS') {
+                    categoryDisplayTitle = 'SPECIFICATIONS';
                 }
 
-                sectionHeader.innerHTML = `<h2 class="text-xl font-semibold text-blue-300">${categoryTitle}</h2>
+                sectionHeader.innerHTML = `<h2 class="text-xl font-semibold text-blue-300">${categoryDisplayTitle}</h2>
                                            <svg class="w-6 h-6 text-blue-300 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>`;
+                
                 sectionHeader.onclick = () => {
                     const content = document.getElementById(`content-${categoryId}`);
                     content.classList.toggle('active');
-                    sectionHeader.querySelector('svg').classList.toggle('rotate-180');
+                    sectionHeader.classList.toggle('active'); // Toggle header class for SVG rotation and border-radius
                     sectionWrapper.classList.toggle('shadow-lg');
+                    sectionWrapper.classList.toggle('rounded-b-lg'); // Adjust border-radius when open
                 };
 
                 const sectionContent = document.createElement('div');
                 sectionContent.id = `content-${categoryId}`;
                 sectionContent.className = 'section-content px-4 pb-4';
 
-                // Map to keep track of current page number for each PDF file path
-                const currentPageCounters = {};
+                let subcategoriesInOrder;
+                if (categoryDisplayTitle === 'ARCHITECTURAL (A-Sheets)') {
+                    subcategoriesInOrder = Object.keys(drawingDataGrouped[category]).sort((a, b) => {
+                        const indexA = architecturalOrder.indexOf(a);
+                        const indexB = architecturalOrder.indexOf(b);
 
-                groupedData[category].forEach((subcat, subcatIndex) => {
+                        if (indexA === -1 && indexB === -1) {
+                            return a.localeCompare(b); // Both not in custom order, sort alphabetically
+                        } else if (indexA === -1) {
+                            return 1; // A not in custom order, B is, so B comes first
+                        } else if (indexB === -1) {
+                            return -1; // B not in custom order, A is, so A comes first
+                        } else {
+                            return indexA - indexB; // Both in custom order, sort by custom index
+                        }
+                    });
+                } else {
+                    subcategoriesInOrder = Object.keys(drawingDataGrouped[category]).sort((a,b) => {
+                        // Custom sort for subcategories based on first sheet's page number and then name
+                        const firstSheetA = drawingDataGrouped[category][a][0];
+                        const firstSheetB = drawingDataGrouped[category][b][0];
+                        if (firstSheetA && firstSheetB && parseInt(firstSheetA.pagenumber) !== parseInt(firstSheetB.pagenumber)) {
+                            return parseInt(firstSheetA.pagenumber) - parseInt(firstSheetB.pagenumber);
+                        }
+                        return a.localeCompare(b);
+                    });
+                }
+
+
+                subcategoriesInOrder.forEach((subcategoryTitle) => {
+                    const subcatItems = drawingDataGrouped[category][subcategoryTitle];
                     const subgroupSection = document.createElement('div');
                     subgroupSection.className = 'subgroup-section mt-4 pt-4 border-t border-gray-700';
                     
-                    // Get the PDF path for this specific subcategory
-                    const subcategoryPdfPath = subcat.pdf;
-
-                    // Initialize or get the current page counter for this PDF file
-                    if (!currentPageCounters[subcategoryPdfPath]) {
-                        currentPageCounters[subcategoryPdfPath] = 1;
-                    }
-                    
-                    // The starting page for the current subgroup in its specific PDF
-                    const subgroupStartPage = currentPageCounters[subcategoryPdfPath];
-                    
-                    // Construct the link for the subgroup title
-                    const subgroupLink = subcategoryPdfPath ? `${subcategoryPdfPath}#page=${subgroupStartPage}` : '#';
+                    // Link for the subcategory title, directly using the 'filename' and 'pagenumber' from the first item
+                    const firstSheet = subcatItems[0];
+                    // Ensure 'filename' is not empty before creating the URL
+                    const subcategoryPdfUrl = firstSheet.filename && firstSheet.pagenumber ? `${firstSheet.filename}#page=${firstSheet.pagenumber}` : '#';
 
                     subgroupSection.innerHTML = `<h4 class="subgroup-title text-lg font-semibold text-blue-300 mb-2">
-                                                    <a href="${subgroupLink}" target="_blank" class="hover:underline">${subcat.subcategory}</a>
-                                                 </h4>`;
-                    
+                                                     <a href="${subcategoryPdfUrl}" target="_blank" class="hover:underline">${subcategoryTitle}</a>
+                                                   </h4>`;
+                                                
                     const drawingList = document.createElement('div');
                     drawingList.className = 'drawing-list space-y-2';
 
-                    subcat.sheets.forEach(sheet => {
+                    subcatItems.forEach(sheet => {
                         const drawingItemWrapper = document.createElement('div');
                         drawingItemWrapper.className = 'drawing-item-wrapper';
 
+                        // Removed hyperlink from Shortname: Name part
                         const drawingItem = document.createElement('div');
-                        // Individual sheet items are now plain text, no links
                         drawingItem.className = 'drawing-item text-gray-200';
                         drawingItem.innerHTML = `<strong class="font-mono bg-gray-700 px-2 py-1 rounded-md text-sm text-gray-100">${sheet.shortname}</strong>: ${sheet.name}`;
                         drawingItemWrapper.appendChild(drawingItem);
 
-                        if (sheet.schedule) {
-                            const scheduleInfo = document.createElement('div');
-                            scheduleInfo.className = 'schedule-info ml-8 mt-2 p-3 bg-gray-700 border-l-4 border-gray-500 rounded-r-md text-sm text-gray-300';
-                            scheduleInfo.innerHTML = sheet.schedule;
-                            drawingItemWrapper.appendChild(scheduleInfo);
+                        if (sheet.description) {
+                            const descriptionInfo = document.createElement('div');
+                            descriptionInfo.className = 'description-info ml-8 mt-2 p-3 bg-gray-700 border-l-4 border-gray-500 rounded-r-md text-sm text-gray-300';
+                            descriptionInfo.innerHTML = sheet.description; // Description directly from spreadsheet
+                            drawingItemWrapper.appendChild(descriptionInfo);
                         }
                         drawingList.appendChild(drawingItemWrapper);
-
-                        // Increment the page counter for the current PDF
-                        currentPageCounters[subcategoryPdfPath]++;
                     });
                     
                     subgroupSection.appendChild(drawingList);
@@ -325,6 +365,7 @@
         function filterDrawings() {
             const filter = document.getElementById('searchInput').value.toUpperCase();
             const sections = document.querySelectorAll('#drawing-container > div');
+            let anySectionVisible = false;
 
             sections.forEach(section => {
                 let sectionHasVisibleContent = false;
@@ -337,40 +378,63 @@
                     items.forEach(item => {
                         const itemText = item.textContent || item.innerText;
                         if (itemText.toUpperCase().indexOf(filter) > -1) {
-                            item.style.display = "";
+                            item.style.display = ""; // Show item
                             subgroupHasVisibleContent = true;
                             sectionHasVisibleContent = true;
                         } else {
-                            item.style.display = "none";
+                            item.style.display = "none"; // Hide item
                         }
                     });
 
                     if (subgroupHasVisibleContent) {
-                        subgroup.style.display = "";
+                        subgroup.style.display = ""; // Show subgroup if it has visible items
                     } else {
-                        subgroup.style.display = "none";
+                        subgroup.style.display = "none"; // Hide subgroup
                     }
                 });
 
                 const content = section.querySelector('.section-content');
-                const header = section.querySelector('svg');
+                const header = section.querySelector('.section-header');
+                const svg = header.querySelector('svg');
 
                 if (filter === "") {
+                    // If search bar is empty, show all sections, collapse content
                     section.style.display = "";
                     content.classList.remove('active');
-                    svg.classList.remove('rotate-180');
+                    header.classList.remove('active'); // Remove header active class
                     section.classList.remove('shadow-lg');
+                    section.classList.remove('rounded-b-lg');
                 } else {
+                    // If searching, show only relevant sections and expand their content
                     if (sectionHasVisibleContent) {
                         section.style.display = "";
                         content.classList.add('active');
-                        svg.classList.add('rotate-180');
+                        header.classList.add('active'); // Add header active class
                         section.classList.add('shadow-lg');
+                        section.classList.add('rounded-b-lg');
+                        anySectionVisible = true;
                     } else {
-                        section.style.display = "none";
+                        section.style.display = "none"; // Hide the entire section if no match
                     }
                 }
             });
+
+            const noResultsMessage = document.getElementById('noResultsMessage');
+            if (filter !== "" && !anySectionVisible) {
+                if (!noResultsMessage) {
+                    const msg = document.createElement('p');
+                    msg.id = 'noResultsMessage';
+                    msg.className = 'text-center text-gray-400 text-lg mt-8';
+                    msg.textContent = 'No matching drawings or schedules found.';
+                    document.getElementById('drawing-container').appendChild(msg);
+                } else {
+                    noResultsMessage.style.display = '';
+                }
+            } else {
+                if (noResultsMessage) {
+                    noResultsMessage.style.display = 'none';
+                }
+            }
         }
 
         document.addEventListener('DOMContentLoaded', buildDrawingIndex);
